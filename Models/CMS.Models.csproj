@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ClinicCustomer\**" />
+    <Compile Remove="Q&amp;A\**" />
+    <EmbeddedResource Remove="ClinicCustomer\**" />
+    <EmbeddedResource Remove="Q&amp;A\**" />
+    <None Remove="ClinicCustomer\**" />
+    <None Remove="Q&amp;A\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
+  </ItemGroup>
+
+</Project>

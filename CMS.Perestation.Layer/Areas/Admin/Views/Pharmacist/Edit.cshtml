@@ -1,0 +1,193 @@
+﻿@using CMS.Utitlities.StaticData
+@model CMS.Models.CuraHub.PharmacySection.PharmacySectionVM.PharmacistVM
+
+@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<h1 class="m-3 fw-bold">Edit Pharmacist</h1>
+<div class="card shadow p-4 rounded">
+    <form asp-action="Edit" class="needs-validation" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" name="pageNumber" value="@ViewBag.currentPage" />
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="FirstName" class="form-label"></label>
+                <input asp-for="FirstName" class="form-control" placeholder="First Name"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="FirstName"></span>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="LastName" class="form-label"></label>
+                <input asp-for="LastName" class="form-control" placeholder="Last Name"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="LastName"></span>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="Phone" class="form-label"></label>
+                <input asp-for="Phone" class="form-control" type="tel" placeholder="Phone Number"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="Phone"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" type="email" placeholder="Email" disabled/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="Email"></span>
+                </div>
+            </div>
+            @* <div class="col-md-6 mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" type="password" placeholder="Email"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="Password"></span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="ConfirmPassword" class="form-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Email"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="ConfirmPassword"></span>
+                </div>
+            </div> *@
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label asp-for="State" class="form-label">Select State</label>
+                <select class="form-select" asp-for="State">
+                    <option selected>Select State</option>
+                    @foreach (var state in State.States) 
+                    {
+                        <option value="@state">@state</option>
+                    }
+                </select>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="State"></span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="City" class="form-label">Select City</label>
+                <select class="form-select" asp-for="City">
+                    <option selected>Select City</option>
+                    @foreach (var city in City.cities)
+                    {
+                        <option value="@city">@city</option>
+                    }
+                </select>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="City"></span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Region" class="form-label"></label>
+                <input asp-for="Region" class="form-control" placeholder="Region"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="Region"></span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Street" class="form-label"></label>
+                <input asp-for="Street" class="form-control" placeholder="Street"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="Street"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="DateOfBirth" class="form-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" type="date"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="DateOfBirth"></span>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex align-items-center">
+                <label asp-for="Gender" class="control-label me-3">Gender</label>
+                <input asp-for="Gender" class="form-control form-check-input me-1" type="radio" value="@Gender.Male" checked/>
+                <label class="form-check-label me-2" asp-for="Gender">
+                    Male
+                </label>
+                <input asp-for="Gender" class="form-control form-check-input me-1" type="radio" value="@Gender.Female"/>
+                <label class="form-check-label me-2" asp-for="Gender">
+                    Female
+                </label>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="Gender"></span>
+                </div>   
+            </div>
+            <div class="col-md-4 d-flex align-items-center">
+                <label asp-for="MaritalStatus" class="control-label me-3">Marital Status</label>
+                <input asp-for="MaritalStatus" class="form-control form-check-input me-1" type="radio" value="@MaritalStatus.Single" checked/>
+                <label class="form-check-label me-2" asp-for="MaritalStatus">
+                    Single
+                </label>
+                <input asp-for="MaritalStatus" class="form-control form-check-input me-1" type="radio" value="@MaritalStatus.Married"/>
+                <label class="form-check-label me-2" asp-for="MaritalStatus">
+                    Married
+                </label>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="MaritalStatus"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="StartWork" class="control-label">Start Work</label>
+                <input asp-for="StartWork" class="form-control" type="time"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="StartWork"></span>
+                </div>                       
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="EndWork" class="control-label">End Work</label>
+                <input asp-for="EndWork" class="form-control" type="time"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="EndWork"></span>
+                </div>                       
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="Salary" class="control-label">Salary</label>
+                <input asp-for="Salary" class="form-control" type="number" placeholder="Salary"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="Salary"></span>
+                </div>                       
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="FileProfile" class="control-label">Upload Profile Photo</label>
+                <input type="hidden" asp-for="ProfilePicture" class="form-control" />
+                <input asp-for="FileProfile" class="form-control" type="file"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="FileProfile"></span>
+                </div>           
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="ExperienceYears" class="control-label">Experience Years</label>
+                <input asp-for="ExperienceYears" class="form-control" type="number" placeholder="Experience Years"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="ExperienceYears"></span>
+                </div>           
+             </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="FileMedicalDegree" class="control-label">Medical Degree</label>
+                <input type="hidden"  asp-for="MedicalDegree" class="form-control" />
+                <input asp-for="FileMedicalDegree" class="form-control" type="file" />
+                <div class="invalid-feedback">
+                    <span asp-validation-for="FileMedicalDegree"></span>
+                </div>            
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Save</button>
+        <a asp-action="Index" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-secondary mt-3">Cancel</a>
+    </form>
+</div>
+

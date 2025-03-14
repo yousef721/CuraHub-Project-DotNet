@@ -1,0 +1,99 @@
+﻿@model CMS.Models.CuraHub.PharmacySection.PharmacySectionVM.PharmacistVM
+
+@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<div class="card shadow-sm p-4 rounded mt-5">
+    <div class="card-header bg-primary text-white">
+        <h2 class="text-center">@Model.FirstName @Model.LastName</h2>
+    </div>
+    <div class="card-body">
+        <div class="row d-flex align-items-center">
+            <div class="col-lg-4 col-md-6 text-center">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#profilePictureModal">
+                    <img src="~/Files/Images/Pharmacists/@Model.ProfilePicture" alt="Profile Picture" class="img-fluid mb-sm-3" style="max-height: 250px; object-fit: contain; cursor: pointer;" />
+                </a>
+            </div>
+            <div class="col-lg-8 col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Email:</strong> @Model.Email</li>
+                    <li class="list-group-item"><strong>Phone:</strong> @Model.Phone</li>
+                    <li class="list-group-item"><strong>Address:</strong> @Model.Street, @Model.Region, @Model.City, @Model.State</li>
+                    <li class="list-group-item"><strong>Gender:</strong> @Model.Gender</li>
+                    <li class="list-group-item"><strong>Date of Birth:</strong> @Model.DateOfBirth</li>
+                    <li class="list-group-item"><strong>Experience Years:</strong> @Model.ExperienceYears</li>
+                    <li class="list-group-item"><strong>Salary:</strong> <span class="text-success fw-bold">@Model.Salary EGP</span></li>
+                    <li class="list-group-item"><strong>National ID Number:</strong> @Model.PersonalNationalIDNumber</li>
+                    <li class="list-group-item d-flex align-items-center gap-5">
+                        <div>
+                            <strong class="me-2">Medical Degree:</strong> 
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#medicalDegreeModal">
+                                <img src="~/Files/Images/Pharmacists/@Model.MedicalDegree" alt="Medical Degree" class="img-fluid" style="max-width:50px; max-height:50px; cursor: pointer;" />
+                            </a>
+                        </div>
+                        <div>
+                            <strong class="me-2">National ID Card:</strong>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#nationalIDModal">
+                                <img src="~/Files/Images/Pharmacists/@Model.PersonalNationalIDCard" alt="National ID Card" class="img-fluid" style="max-width:50px; max-height:50px; cursor: pointer;" />
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-4 d-flex justify-content-center gap-3">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary px-4">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a asp-action="Index" class="btn btn-secondary px-4">
+                <i class="bi bi-arrow-left-circle"></i> Back
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Profile Picture Modal -->
+<div class="modal fade" id="profilePictureModal" tabindex="-1" aria-labelledby="profilePictureModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="profilePictureModalLabel">Profile Picture</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="~/Files/Images/Pharmacists/@Model.ProfilePicture" class="img-fluid" alt="Profile Picture" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Medical Degree Modal -->
+<div class="modal fade" id="medicalDegreeModal" tabindex="-1" aria-labelledby="medicalDegreeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="medicalDegreeModalLabel">Medical Degree</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="~/Files/Images/Pharmacists/@Model.MedicalDegree" class="img-fluid" alt="Medical Degree" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- National ID Card Modal -->
+<div class="modal fade" id="nationalIDModal" tabindex="-1" aria-labelledby="nationalIDModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nationalIDModalLabel">National ID Card</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="~/Files/Images/Pharmacists/@Model.PersonalNationalIDCard" class="img-fluid" alt="National ID Card" />
+            </div>
+        </div>
+    </div>
+</div>

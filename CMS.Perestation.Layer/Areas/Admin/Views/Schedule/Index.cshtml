@@ -1,0 +1,182 @@
+﻿@using CMS.Models.CuraHub.ClinicSection
+@using CMS.Models.CuraHub.ClinicSection.ClinicSectionVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model SchedulesVM
+
+
+<br />
+<br />
+<br />
+
+<div class="row">
+    <div class="col-10">
+        <h1>All Schedules</h1>
+    </div>
+    <div class="col-2">
+        <a href="/Admin/CuraHub/Clinic/Schedule/CreateEdit" class="btn btn-secondary"><i class="bi bi-plus-circle"></i> Add New Schedule</a>
+    </div>
+</div>
+<br />
+<div class="rounded-2 bg-white pb-2">
+    <form>
+        <br />
+
+        <div class="row">
+           
+            <div class="col-3">
+                <select class="form-select" name="doctorId" aria-label="Default select example">
+                    <option selected>Select by Doctor</option>
+                    @foreach (var doctor in Model.Doctors)
+                     { 
+                        <option value="@doctor.Id">@doctor.FirstName @doctor.LastName</option>
+                     }
+
+                </select>
+
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+
+            </div>
+
+
+        </div>
+
+
+    </form>
+</div>
+<br />
+
+<table class="table" style="border:solid">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col" style="text-align:center">ID</th>
+            <th scope="col" style="text-align:center">Day</th>
+            <th scope="col" style="text-align:center">Appointment</th>
+            <th scope="col" style="text-align:center">Available</th>
+            <th scope="col" style="text-align:center">Doctor</th>
+            <th scope="col" style="text-align:center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Schedules)
+        {
+            <tr style="border:solid">
+                <th scope="row" style="border:solid">@item.Id</th>
+                <th scope="row" style="border:solid">@item.Day</th>
+                <th scope="row" style="border:solid">@item.Appointment</th>
+
+                <th scope="row" style="border:solid">
+                    @if (item.Available)
+                    {
+                        <a href="/Admin/CuraHub/Clinic/Schedule/LockAvailable?ScheduleId=@item.Id" class="btn btn-primary">Available</a>
+                    }
+                    else
+                    {
+                        <a href="/Admin/CuraHub/Clinic/Schedule/UnLockAvailable?ScheduleId=@item.Id" class="btn btn-danger">Unavailable</a>
+
+                    }
+
+                </th>
+
+
+                <th scope="row" style="border:solid"><a href="/Admin/CuraHub/Clinic/Doctor/Details?DoctorId=@item.DoctorId"> @item.Doctor.FirstName @item.Doctor.LastName </a></th>
+
+                <td>
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                        <button type="button" class="btn btn-primary">Action</button>
+                        <div class="btn-group" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <a class="dropdown-item" href="/Admin/CuraHub/Clinic/Schedule/CreateEdit?ScheduleId=@item.Id"> <i class="bi bi-pencil-square"></i>Edit</a>
+                                @* <a class="dropdown-item" href="/Admin/CuraHub/Clinic/Schedule/Delete?ScheduleId=@item.Id" onclick="return confirm('are you sure?')">Delete</a> *@
+                                <a class="dropdown-item delete-btn"
+                                   data-Schedule-id="@item.Id"
+                                   data-Schedule-name="@item.Day" + "@item.Appointment"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#deleteModal">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex flex-row-reverse">
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            @for (int i = 1; i <= (Model.TotalSchedulesCount + 4) / 5; i++)
+            {
+
+                <li class="page-item"><a class="page-link " href="/Admin/CuraHub/Clinic/Schedule/Index?PageNumber=@i">@i</a></li>
+
+            }
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+
+
+</div>
+
+
+
+
+
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the Schedule <strong id="modalScheduleName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Attach event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const ScheduleId = this.getAttribute('data-Schedule-id');
+            const ScheduleName = this.getAttribute('data-Schedule-name');
+
+            // Set the category name in the modal
+            document.getElementById('modalScheduleName').textContent = ScheduleName;
+
+            // Update the delete link to include the categoryId
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            confirmDeleteBtn.href = `/Admin/CuraHub/Clinic/Schedule/Delete?ScheduleId=${ScheduleId}`;
+        });
+    });
+</script>
+
+
+
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}
+

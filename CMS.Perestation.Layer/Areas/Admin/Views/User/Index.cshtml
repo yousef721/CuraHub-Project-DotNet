@@ -1,0 +1,117 @@
+﻿@using CMS.Models.CuraHub.IdentitySection.IdentitySectionVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        background-image: url('/Files/Images/group-doctors.avif');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+</style>
+@model List<ApplicationUserVM>
+
+
+<br />
+
+<div class="bg-white p-3">
+    <h1 style="color : #0070cd">All Users </h1>
+
+    <form>
+        <div class="row">
+            <div class="col-4">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="query" id="exampleInputEmail1" placeholder="Search for User">
+                </div>
+            </div>
+
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary mt-0">Search</button>
+
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped ">
+        <thead>
+            <tr>
+                <th scope="col" class="border border-dark">First Name</th>
+                <th scope="col" class="border border-dark">Last Name</th>
+                <th scope="col" class="border border-dark">Email</th>
+                <th scope="col" class="border border-dark">Profile Picture</th>
+                <th scope="col" class="border border-dark">Lockout Enabled</th>
+                <th scope="col" class="border border-dark">Role</th>
+                <th scope="col" class="border border-dark">Manage Role</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row" class="border border-dark">@item.FirstName</th>
+                    <th scope="row" class="border border-dark">@item.LastName</th>
+                    <th scope="row" class="border border-dark">@item.Email</th>
+
+                    <th scope="row" class="border border-dark">
+                        <img src="~/Files/Images/profiles/@item.ProfilePicture" width="50px" />
+                    </th>
+                    <th scope="row" class="border border-dark">
+                        @if (item.LockoutEnabled)
+                        {
+                            <a href="/Admin/CuraHub/Identity/User/Lock?UserId=@item.Id" class="btn btn-primary">Lock</a>
+                        }
+                        else
+                        {
+                            <a href="/Admin/CuraHub/Identity/User/UnLock?UserId=@item.Id" class="btn btn-danger">Unlock</a>
+
+                        }
+
+                    </th>
+                    <th scope="row" class="border border-dark">@item.Role</th>
+
+                    <th scope="row" class="border border-dark">
+                        <a href="/Admin/CuraHub/Identity/User/RoleManagement?UserId=@item.Id" class="btn btn-primary " style="width:200px">Manage Role</a>
+
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <div class="d-flex flex-row-reverse">
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                @for (int i = 1; i <= ((int)TempData["UserCount"] + 4) / 5; i++)
+                {
+                    @* @if (Model.CurrentPageIndex == i) *@
+                    @* { *@
+                    @*     <li class="page-item"><a class="page-link active" href="/Identity/User/Index?PageNumber=@i">@i</a></li> *@
+
+                    @* } *@
+                    @* else *@
+                    @* { *@
+                    <li class="page-item"><a class="page-link " href="/Admin/CuraHub/Identity/User/Index?PageNumber=@i">@i</a></li>
+                    @* } *@
+                }
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+
+    </div>
+
+
+
+
+
+</div>

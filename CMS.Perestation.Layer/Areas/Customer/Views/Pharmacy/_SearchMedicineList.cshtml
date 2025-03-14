@@ -1,0 +1,140 @@
+﻿@using CMS.Models.CuraHub.PharmacySection
+@model List<CMS.Models.CuraHub.PharmacySection.Medicine>
+
+@foreach (var medicine in Model)
+{
+    var medicineInCart = ((List<PharmacyCart>)ViewData["MedicineInCart"])?.FirstOrDefault(m => m.MedicineId == medicine.Id);
+    var isInCart = medicineInCart != null;
+    var countInCart = isInCart ? medicineInCart?.count : 0;
+    var stockStatus = medicine.Quantity == 0 ? "Out of Stock" : (medicine.Quantity < 5 ? "Limited Stock" : "");
+    var isAvailable = medicine.Quantity > 0;
+
+    <li class="list-group-item d-flex align-items-center justify-content-between">
+        <img src="~/Files/images/Medicines/@medicine.Img" alt="@medicine.Name" class="medicine-img me-2" style="width: 50px; height: 50px; object-fit: cover;">
+        
+        <div class="flex-grow-1">
+            <a href="/Customer/CuraHub/Pharmacy/Medicine/Details?medicineId=@medicine.Id" class="text-decoration-none text-dark">
+                <strong>@medicine.Name</strong>
+            </a>
+            <br>
+            <span class="text-primary fw-bold">@medicine.Price EGP</span>
+            @if (!string.IsNullOrEmpty(stockStatus))
+            {
+                <span class="text-danger ms-2">@stockStatus</span>
+            }
+        </div>
+        
+        @if (isAvailable)
+        {
+            <div class="cart-controls" id="cart-@medicine.Id" style="@(isInCart ? "display: flex;" : "display: none;")">
+                <button class="btn btn-light btn-sm" id="plus-@medicine.Id" onclick="updateCart(@medicine.Id, 'PlusToCart', event)">
+                    <i class="fas fa-plus text-primary"></i>
+                </button>
+                
+                <span class="count fw-bold" id="count-@medicine.Id">@countInCart</span>
+                
+                <button class="btn btn-light btn-sm" id="minus-@medicine.Id" onclick="updateCart(@medicine.Id, 'MinusFromCart', event)" style="@(countInCart > 1 ? "display: inline-block;" : "display: none;")">
+                    <i class="fas fa-minus text-primary"></i>
+                </button>
+                
+                <button class="btn btn-danger btn-sm" id="delete-@medicine.Id" onclick="deleteItem(@medicine.Id, event)" style="@(countInCart == 1 ? "display: inline-block;" : "display: none;")">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            
+            <button class="btn btn-light btn-sm fw-bold text-primary" id="adder-@medicine.Id" onclick="updateCart(@medicine.Id, 'PlusToCart', event)" style="@(isInCart ? "display: none;" : "display: block;")">
+                Add <i class="fas fa-plus"></i>
+            </button>
+        }
+        else
+        {
+            <span class="badge bg-secondary">Unavailable</span>
+        }
+    </li>
+}
+
+<script>
+$(document).ready(function () {
+    updateCartCount();
+});
+
+// Function to get cart count
+function updateCartCount() {
+    $.ajax({
+        url: '/Customer/CuraHub/Pharmacy/PharmacyCart/GetCartCount',
+        type: 'GET',
+        success: function (response) {
+            if (response) {
+                $('#cart-count').text(response.count);
+            }
+        }
+    });
+}
+
+// Function to update cart
+function updateCart(medicineId, action, event) {
+    event.preventDefault();
+
+    if (!isAuthenticated) {
+        window.location.href = "/Identity/Account/Login";
+        return;
+    }
+
+    $.ajax({
+        url: `/Customer/CuraHub/Pharmacy/PharmacyCart/${action}`,
+        type: "POST",
+        data: { medicineId },
+        success: function (response) {
+            if (response) {
+                updateUIAfterCartChange(medicineId, response.count);
+                updateCartCount();
+            }
+        }
+    });
+}
+
+// Function to delete item from cart
+function deleteItem(medicineId, event) {
+    event.preventDefault();
+
+    $.ajax({
+        url: `/Customer/CuraHub/Pharmacy/PharmacyCart/DeleteFromCart`,
+        type: "POST",
+        data: { medicineId },
+        success: function () {
+            updateUIAfterCartChange(medicineId, 0);
+            updateCartCount();
+        }
+    });
+}
+
+// Function to update UI after cart changes
+function updateUIAfterCartChange(medicineId, count) {
+    const countElement = $(`#count-${medicineId}`);
+    const addButton = $(`#adder-${medicineId}`);
+    const plusButton = $(`#plus-${medicineId}`);
+    const minusButton = $(`#minus-${medicineId}`);
+    const deleteButton = $(`#delete-${medicineId}`);
+    const cartControls = $(`#cart-${medicineId}`);
+
+    countElement.text(count);
+    cartControls.toggle(count > 0);
+
+    if (count === 0) {
+        addButton.show();
+        plusButton.hide();
+        minusButton.hide();
+        deleteButton.hide();
+    } else if (count === 1) {
+        addButton.hide();
+        plusButton.show();
+        minusButton.hide();
+        deleteButton.show();
+    } else {
+        addButton.hide();
+        plusButton.show();
+        minusButton.show();
+        deleteButton.hide();
+    }
+}
+</script>

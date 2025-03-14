@@ -1,0 +1,502 @@
+﻿@using CMS.Models.CuraHub.IdentitySection
+@using CMS.Utitlities.StaticData
+@using Microsoft.AspNetCore.Identity
+@using CMS.Data.Access.Layer.Repository.IRepository
+
+
+@inject UserManager<ApplicationUser> _userManager
+@inject IUnitOfWork _unitOfWork
+
+@{
+    var user = await _userManager.GetUserAsync(User);
+    Doctor? doctor = null;
+    ClinicReceptionist? clinicReceptionist = null;
+    if (user != null)
+    {
+        doctor = _unitOfWork.DoctorRepository.RetriveItem(filter: e => e.ApplicationUserId == user.Id);
+        clinicReceptionist = _unitOfWork.ClinicReceptionistRepository.RetriveItem(filter: e => e.ApplicationUserId == user.Id);
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CuraHub</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/CustomerFilter.css" asp-append-version="true" />
+
+    @* <link rel="stylesheet" href="~/CMS.Presentation.layer.styles.css" asp-append-version="true" /> *@
+    <style>
+        body {
+           
+            font-family: Arial, sans-serif;
+            /* background-color: #f9f9f9; */
+            background-image: url('/Files/Images/Background.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            /* background-blend-mode: overlay;  */
+             background-color: rgba(f9, f9, f9, 0.5);
+        }
+        .hero-section {
+            /* height: 70vh; */
+            /* display: flex; */
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin :auto;
+
+        }
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        .features-section {
+            padding: 3rem 1rem;
+        }
+        .feature-card {
+            border: none;
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        .footer {
+            background-color: #006d77;
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+
+    </style>
+
+</head>
+<body>
+    <header>
+       <partial name="_NavbarPartial" />
+
+    </header>
+    
+    
+    <div class="row">
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="col-md-2 bg-dark text-white min-vh-100">
+
+                <br />
+
+
+                <div class="">
+
+                    <h1 class="text-white text-center border-bottom border-primary border-5 m-3">Dashboard</h1>
+
+                    <ul class="nav flex-column">
+
+                        <li class="nav-item">
+
+                            <a class="nav-link" href="/Customer/Home/Index"><i class="bi bi-house-fill"></i> Home</a>
+                            <a class="nav-link" href="/Admin/CuraHub/Message/Index"><i class="bi bi-envelope-at"></i> Messgaes </a>
+
+                            <hr />
+
+                        </li>
+
+                        <li class="nav-item">
+
+                            <h6 class="nav-link text-white dropdown-header" data-bs-toggle="collapse" data-bs-target="#identityCollapse" id="identityHeader">
+
+                                Identity <i class="fas fa-chevron-down float-end" id="identityArrow"></i>
+
+                            </h6>
+
+                            <div class="collapse" id="identityCollapse">
+
+                                <a class="nav-link" href="/Admin/CuraHub/Identity/User/Index"><i class="bi bi-person-circle"></i> Users</a>
+
+                                <a class="nav-link" href="/Admin/CuraHub/Identity/Role/Index"><i class="bi bi-border-width"></i> Roles</a>
+
+                            </div>
+
+                            <hr />
+
+                        </li>
+
+                        <li class="nav-item">
+
+
+                            <h6 class="nav-link text-white dropdown-header" data-bs-toggle="collapse" data-bs-target="#clinicCollapse" id="clinicHeader">
+
+                                Clinic <i class="fas fa-chevron-down float-end" id="clinicArrow"></i>
+
+                            </h6>
+
+                            <div class="collapse" id="clinicCollapse">
+
+                                <a class="nav-link" href="/Admin/CuraHub/Clinic/Doctor/Index"><i class="bi bi-heart-pulse"></i> Doctors</a>
+
+                                <a class="nav-link" href="/Admin/CuraHub/Clinic/Patient/Index"><i class="fas fa-user-injured fa-1x"></i> Patients</a>
+                                <a class="nav-link" href="/Admin/CuraHub/Clinic/PatientAppointment/Index"><i class="bi bi-hourglass-split"></i> Patients Appointments</a>           
+                                <a class="nav-link" href="/Admin/CuraHub/Clinic/ClinicReceptionist/Index"><i class="bi bi-receipt-cutoff"></i> Receptionists</a>
+                                <a class="nav-link" href="/Admin/CuraHub/Clinic/Specialization/Index"><i class="fas fa-user-md fa-1x"></i> Specializations</a>
+                                <a class="nav-link" href="/Admin/CuraHub/Clinic/Qualification/Index"><i class="bi bi-layers-fill"></i> Qualifications</a>
+
+                                <a class="nav-link" href="/Admin/CuraHub/Clinic/RequestDoctor/Index"><i class="bi bi-heart-pulse-fill"></i> Request Doctors</a>
+
+                                <a class="nav-link" href="/Admin/CuraHub/Clinic/RequestClinicReceptionist/Index"><i class="bi bi-reception-2"></i> Request Receptionists</a>
+
+                            </div>
+
+                            <hr />
+
+                        </li>
+
+                        <li class="nav-item">
+
+
+                            <h6 class="nav-link text-white dropdown-header" data-bs-toggle="collapse" data-bs-target="#pharmacyCollapse" id="pharmacyHeader">
+
+                                Pharmacy <i class="fas fa-chevron-down float-end" id="pharmacyArrow"></i>
+
+                            </h6>
+
+                            <div class="collapse" id="pharmacyCollapse">
+
+                                <a class="nav-link" href="/Admin/CuraHub/Pharmacy/Medicine/Index"><i class="bi bi-capsule"></i> Medicines</a>
+                                <a class="nav-link" href="/Admin/CuraHub/Pharmacy/PharmacyCategory/Index"><i class="bi bi-list-ul"></i> Categories</a>
+                                <a class="nav-link" href="/Admin/CuraHub/Pharmacy/MedicineManufactory/Index"><i class="bi bi-building"></i> Manufactories</a>
+                                <a class="nav-link" href="/Admin/CuraHub/Pharmacy/Pharmacist/Index"><i class="bi bi-person-bounding-box"></i> Pharmacists</a>
+                                <a class="nav-link" href="/Admin/CuraHub/Pharmacy/PharmacyOrder/Index"><i class="bi bi-cart-fill"></i> Orders</a>
+                                <a class="nav-link" href="/Admin/CuraHub/Pharmacy/PharmacyDeliveryRepresentative/Index"><i class="bi bi-truck"></i> Delivery Representatives</a>
+                                <a class="nav-link" href="/Admin/CuraHub/Pharmacy/PharmacyCustomer/Index"><i class="bi bi-people-fill"></i> Pharmacy Customers</a>
+
+                            </div>
+
+                            <hr />
+
+                        </li>
+
+
+                       
+
+
+                        <li class="nav-item">
+
+                            <!-- إضافة سهم وقائمة منسدلة -->
+
+                            <h6 class="nav-link text-white dropdown-header" data-bs-toggle="collapse" data-bs-target="#QACollapse" id="QAHeader">
+
+                                Q & A <i class="fas fa-chevron-down float-end" id="QAArrow"></i>
+
+                            </h6>
+
+                            <div class="collapse" id="QACollapse">
+
+                                <a class="nav-link" href="/Admin/CuraHub/Q&A/Question/Index"><i class="bi bi-question-lg"></i> Q & A</a>
+
+
+                            </div>
+
+                            <hr />
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+            <div class="col-md-10">
+                <div class="hero-section">
+                    <div class="container">
+                        <main role="main" class="pb-3">
+                            @RenderBody()
+                        </main>
+                    </div>
+                </div>
+
+            </div>
+        }
+        else if (User.IsInRole(Role.DoctorRole))
+        {
+        <div class="col-md-2 bg-dark text-white min-vh-100">
+
+            <br />
+
+            <br />
+
+            <br />
+
+            <div class="">
+
+                <h3 class="text-center mt-3">Dashboard</h3>
+
+                <ul class="nav flex-column">
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="/Customer/Home/Index"><i class="bi bi-house-fill"></i> Home</a>
+
+                        <hr />
+
+                    </li>
+
+                    <li class="nav-item">
+
+
+                        <h6 class="nav-link text-white dropdown-header" data-bs-toggle="collapse" data-bs-target="#clinicCollapse" id="clinicHeader">
+
+                            Clinic <i class="fas fa-chevron-down float-end" id="clinicArrow"></i>
+
+                        </h6>
+
+                        <div class="collapse" id="clinicCollapse">
+
+                                <a class="nav-link" href="/Staff/CuraHub/Clinic/Doctor/Info?DoctorId=@doctor?.Id"><i class="bi bi-info-circle"></i>  My Info</a>
+                                <a class="nav-link" href="/Staff/CuraHub/Clinic/ClinicReceptionist/Index?DoctorId=@doctor?.Id"><i class="bi bi-people"></i> My Receptionists</a>
+                                @* <a class="nav-link" href="/Customer/CuraHub/Clinic/PatientAppointment/Index?date=@DateOnly.FromDateTime(DateTime.Now)&DoctorId=@doctor.Id"><i class="fas fa-user-injured fa-1x"></i> Patients</a> *@
+                                <div class="dropdown">
+                                    <button class="nav-link dropdown-toggle mt-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-user-injured fa-1x"></i> Patients
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="/Customer/CuraHub/Clinic/PatientAppointment/Index?date=@DateOnly.FromDateTime(DateTime.Now)&DoctorId=@doctor.Id&dateIndex=0">Today @DateOnly.FromDateTime(DateTime.Now) </a></li>
+                                        <li><a class="dropdown-item" href="/Customer/CuraHub/Clinic/PatientAppointment/Index?date=@DateOnly.FromDateTime(DateTime.Now.AddDays(1))&DoctorId=@doctor.Id&dateIndex=1">Tommorrow @DateOnly.FromDateTime(DateTime.Now.AddDays(1))  </a></li>
+
+                                        @for (int i = 2; i <= 6; i++)
+                                        {
+                                            <li> <a class="dropdown-item" href="/Customer/CuraHub/Clinic/PatientAppointment/Index?date=@DateOnly.FromDateTime(DateTime.Now.AddDays(i))&DoctorId=@doctor.Id&dateIndex=i">@DateTime.Now.AddDays(i).DayOfWeek @DateOnly.FromDateTime(DateTime.Now.AddDays(i))  </a></li>
+                                        }
+
+
+                                    </ul>
+                                </div>
+
+                                <a class="nav-link" href="/Staff/CuraHub/Clinic/Schedule/ShowDoctorSchedule?DoctorId=@doctor?.Id"><i class="bi bi-hourglass-split"></i> my Schedules</a>
+                                <a class="nav-link" href="#"><i class="bi bi-layers-fill"></i> my Qualifications</a>
+                                <a class="nav-link" href="/Staff/CuraHub/Q&A/Question/DoctorAnswers?DoctorId=@doctor?.Id"><i class="bi bi-question"></i> Question That I answered </a>
+                                <a class="nav-link" href="/Staff/CuraHub/Q&A/Question/Index?PageNumber=1&SpecializationId=@doctor?.SpecializationId&DoctorId=@doctor?.Id"><i class="bi bi-question"></i> Question isn't answered </a>
+
+
+
+                        </div>
+
+                        <hr />
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+        <div class="col-md-10">
+            <div class="hero-section">
+                <div class="container">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
+                </div>
+            </div>
+
+        </div>
+        }
+        else if (User.IsInRole(Role.ClinicReceptionistRole))
+        {
+            <div class="col-md-2 bg-dark text-white min-vh-100">
+
+                <br />
+
+                <br />
+
+                <br />
+
+                <div class="">
+
+                    <h3 class="text-center mt-3">Dashboard</h3>
+
+                    <ul class="nav flex-column">
+
+                        <li class="nav-item">
+
+                            <a class="nav-link" href="/Customer/Home/Index"><i class="bi bi-house-fill"></i> Home</a>
+
+                            <hr />
+
+                        </li>
+
+                        <li class="nav-item">
+
+
+                            <h6 class="nav-link text-white dropdown-header" data-bs-toggle="collapse" data-bs-target="#clinicCollapse" id="clinicHeader">
+
+                                Clinic <i class="fas fa-chevron-down float-end" id="clinicArrow"></i>
+
+                            </h6>
+
+                            <div class="collapse" id="clinicCollapse">
+
+                                <a class="nav-link" href="/Staff/CuraHub/Clinic/ClinicReceptionist/Details?ClinicReceptionistId=@clinicReceptionist?.Id"><i class="bi bi-info-circle"></i>  My Info</a>
+                                @* <a class="nav-link" href="/Customer/CuraHub/Clinic/PatientAppointment/ShowAppoitments?date=@DateOnly.FromDateTime(DateTime.Now)&ClinicReceptionistId=@clinicReceptionist.Id"><i class="fas fa-user-injured fa-1x"></i> Patients</a> *@
+
+                                <div class="dropdown">
+                                    <button class="nav-link dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-user-injured fa-1x"></i> Patients
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="/Customer/CuraHub/Clinic/PatientAppointment/ShowAppoitments?date=@DateOnly.FromDateTime(DateTime.Now)&ClinicReceptionistId=@clinicReceptionist.Id&dateIndex=0">Today @DateOnly.FromDateTime(DateTime.Now) </a></li>
+                                        <li><a class="dropdown-item" href="/Customer/CuraHub/Clinic/PatientAppointment/ShowAppoitments?date=@DateOnly.FromDateTime(DateTime.Now.AddDays(1))&ClinicReceptionistId=@clinicReceptionist.Id&dateIndex=1">Tommorrow @DateOnly.FromDateTime(DateTime.Now.AddDays(1))  </a></li>
+
+                                        @for (int i = 2; i <= 6; i++)
+                                        {
+                                            <li> <a class="dropdown-item" href="/Customer/CuraHub/Clinic/PatientAppointment/ShowAppoitments?date=@DateOnly.FromDateTime(DateTime.Now.AddDays(i))&ClinicReceptionistId=@clinicReceptionist.Id&dateIndex=i">@DateTime.Now.AddDays(i).DayOfWeek @DateOnly.FromDateTime(DateTime.Now.AddDays(i))  </a></li>
+                                        }
+
+                                       
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+            <div class="col-md-10">
+                <div class="hero-section">
+                    <div class="container">
+                        <main role="main" class="pb-3">
+                            @RenderBody()
+                        </main>
+                    </div>
+                </div>
+
+            </div>
+        }
+        else
+        {
+        <div class="col-md-12">
+            <div class="hero-section">
+                <div class="container">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
+                </div>
+            </div>
+
+        </div>
+
+        }
+    </div>
+    
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>Why Choose CuraHub?</h2>
+                <p class="text-muted">Simplifying healthcare for everyone.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Easy Booking</h5>
+                            <p class="card-text">Book appointments with just a few clicks.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Expert Doctors</h5>
+                            <p class="card-text">Access a network of top-rated specialists.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card feature-card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Secure Platform</h5>
+                            <p class="card-text">Your data is safe with us.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <partial name="_FooterPartial.cshtml" />
+
+    <script>
+        var isAuthenticated = @Json.Serialize(User.Identity.IsAuthenticated);
+    </script>
+
+    <script>
+                document.addEventListener("DOMContentLoaded", function () {
+            const dropdownHeaders = document.querySelectorAll(".dropdown-header");
+
+            dropdownHeaders.forEach(header => {
+                const collapseTarget = document.querySelector(header.dataset.bsTarget);
+                const arrowIcon = header.querySelector("i");
+
+                // التحقق من وجود العناصر
+                if (header && collapseTarget && arrowIcon) {
+                    const collapse = new bootstrap.Collapse(collapseTarget, { toggle: false });
+
+                    header.addEventListener("click", function () {
+                        collapse.toggle();
+                        this.setAttribute("aria-expanded", collapseTarget.classList.contains("show")); // تحديث aria-expanded
+                    });
+
+                    collapseTarget.addEventListener("show.bs.collapse", function () {
+                        arrowIcon.classList.remove("fa-chevron-down");
+                        arrowIcon.classList.add("fa-chevron-up");
+                    });
+
+                    collapseTarget.addEventListener("hide.bs.collapse", function () {
+                        arrowIcon.classList.remove("fa-chevron-up");
+                        arrowIcon.classList.add("fa-chevron-down");
+                    });
+
+                    // إضافة aria-controls
+                    header.setAttribute("aria-controls", collapseTarget.id);
+                } 
+            });
+        });
+
+
+    </script> 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- jQuery (Toastr يعتمد عليه) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

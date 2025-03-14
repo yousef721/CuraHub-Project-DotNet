@@ -1,0 +1,141 @@
+﻿@using CMS.Models.CuraHub.QuestionAndAnswerSection.QuestionsAndAnswersVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+
+@model Admin_QuestionsVM
+<style>
+
+    body {
+    background-color: #e2e6ea;
+    background-image: none;
+    }
+
+    h1 {
+    color: black;
+    }
+
+</style>
+
+
+
+<div class="bg-white p-3 mt-3">
+    <div class="row">
+        <div class="col-12">
+            <h1>All Q & A</h1>
+        </div>
+    </div>
+    <br />
+    <div class="rounded-2 bg-white pb-2">
+        <form>
+            <br />
+
+            <div class="row">
+                <div class="row">
+
+                    <div class="col-4">
+                        <select class="form-select" id="mySpecializationId" name="SpecializationId" aria-label="Default select example">
+                            <option value="@null" selected>Select Specialization</option>
+                            @foreach(var item in Model.Specializations)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+
+                    </div>
+                    <div class="col-4">
+                        <select class="form-select" id="myDoctorId" name="DoctorId" aria-label="Default select example">
+                            <option value="@null" selected>Select Doctor</option>
+                            @foreach (var item in Model.Doctors)
+                            {
+                                <option value="@item.Id">@item.FirstName @item.LastName</option>
+                            }
+                        </select>
+
+                    </div>
+
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary mt-0">Search</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </form>
+    </div>
+    <br />
+
+    <table class="table" style="border:solid">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col" style="text-align:center">ID</th>
+                <th scope="col" style="text-align:center">Date</th>
+                <th scope="col" style="text-align:center">Question</th>
+                <th scope="col" style="text-align:center">Answer</th>
+                <th scope="col" style="text-align:center">Status</th>
+                <th scope="col" style="text-align:center">Specialization</th>
+                <th scope="col" style="text-align:center">Doctor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.QuestionAndAnswers)
+            {
+                <tr style="border:solid">
+                    <th scope="row" style="border:solid">@item.Id</th>
+                    <th scope="row" style="border:solid">@item.Date</th>
+                    <th scope="row" style="border:solid">@item.Question</th>
+                    <th scope="row" style="border:solid">@item.Answer</th>               
+                    <th scope="row" style="border:solid">
+                        @if (item.Status)
+                        {
+                            <button disabled class="btn btn-success mt-0">Answered</button>        
+                        }
+                        else
+                        {
+                            <button disabled class="btn btn-warning mt-0">Not Answered</button>
+                        }
+                    </th>
+                    <th scope="row" style="border:solid">@item.Specialization?.Name</th>
+                    <th scope="row" style="border:solid">@item.Doctor?.FirstName @item.Doctor?.LastName</th>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex flex-row-reverse">
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                @for (int i = 1; i <= (Model.TotalQuestionCount + 4) / 5; i++)
+                {
+
+                    <li class="page-item"><a class="page-link " href="/Admin/CuraHub/Q&A/Question/Index?PageNumber=@i">@i</a></li>
+
+                }
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}

@@ -1,0 +1,190 @@
+﻿@using CMS.Models.CuraHub.ClinicSection.ClinicSectionVM.RequestClinicReceptionistSectionVM
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model RequestClinicReceptionistDetailsVM
+
+<div class="bg-white bg-opacity-50 mt-4 ">
+
+    <h1>
+        <img src="~/Files/Images/فلسطين.svg" class="rounded-circle " style="width: 50px;" />
+
+    </h1>
+
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="row mt-2">
+                <h1 class=" text-start d-block"><a href="/Admin/CuraHub/Clinic/RequestDoctor/Index"><i class="bi bi-arrow-left"></i> </a> Deatils for Dr / @Model.FirstName @Model.LastName</h1>
+            </div>
+        </div>
+        @* <div class="col-1"> *@
+        @*     <img src="~/Files/Images/SpecializationLogo/@Model.Specialization.Icon" style="width:50px" class="rounded-circle" /> *@
+        @* </div> *@
+    </div>
+
+
+    <div class="row">
+        <div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="FirstName" class="form-label text-black  text-start d-block">First Name</label>
+                                <input disabled type="text" class="form-control" value="@Model.FirstName" id="FirstName" name="FirstName" placeholder="First Name">
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="LastName" class="form-label  text-black  text-start d-block">Last Name</label>
+                                <input disabled type="text" class="form-control" value="@Model.LastName" id="LastName" name="LastName" placeholder="Last Name">
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="Email" class="form-label  text-black  text-start d-block">Email</label>
+                                <input disabled type="email" class="form-control" value="@Model.Email" id="Email" name="Email" placeholder="Email">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="Phone" class="form-label  text-black  text-start d-block">Phone</label>
+                                <input type="text" disabled class="form-control" value="@Model.Phone" id="Phone" name="Phone" placeholder="Phone">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="ProfilePicture" class="form-label text-black">Profile Picture</label>
+                        <div>
+                            <img id="ProfilePicture" class="rounded-circle" src="~/Files/Images/DoctorsPictures/@Model.ProfilePicture" alt="Image Preview" style="width:100%;  max-width: 250px; max-height: 250px;">
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <label for="State" class="form-label text-black">State</label>
+                    <input disabled type="text" class="form-control" value="@Model.State" id="State" placeholder="State">
+                </div>
+                <div class="col-3">
+                    <label for="City" class="form-label text-black">City</label>
+                    <input disabled type="text" class="form-control" value="@Model.City" id="City" placeholder="City">
+                </div>
+                <div class="col-3">
+                    <label for="Region" class="form-label text-black">Region</label>
+                    <input disabled type="text" class="form-control" value="@Model.Region" id="Region" placeholder="Region">
+                </div>
+                <div class="col-3">
+                    <label for="Street" class="form-label text-black">Street</label>
+                    <input disabled type="text" class="form-control" value="@Model.Street" id="Street" placeholder="Street">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label for="Gender" class="form-label text-black">Gender</label>
+                    <input disabled type="text" class="form-control" value="@Model.Gender" id="Gender" placeholder="Gender">
+                </div>
+                <div class="col-3">
+                    <label for="BloodType" class="form-label text-black">Blood Type</label>
+                    <input disabled type="text" class="form-control" value="@Model.BloodType" id="BloodType" placeholder="BloodType">
+                </div>
+                <div class="col-3">
+                    <label for="MaritalStatus" class="form-label text-black">Marital Status</label>
+                    <input disabled type="text" class="form-control" value="@Model.MaritalStatus" id="MaritalStatus" placeholder="MaritalStatus">
+                </div>
+                <div class="col-3">
+                    <label for="Title" class="form-label text-black"> Expected Salary</label>
+                    <input disabled type="text" class="form-control" value="@Model.Salary" id="Title" placeholder="Title">
+                </div>
+            </div>
+
+
+            <div class="row">
+                @* <div class="col-3">  *@
+                @*      <label for="ApplicationUserId" class="form-label text-black">Application User</label> *@
+                @*     <input disabled type="text" class="form-control" value="@applicationUserEmail" id="ApplicationUserId" placeholder="ApplicationUserId"> *@
+                @* </div> *@
+
+               
+
+                <div class="col-6">
+                    <label for="DateOfBirth" class="form-label text-black">Date Of Birth</label>
+                    <input disabled type="text" class="form-control" value="@Model.DateOfBirth" id="DateOfBirth" placeholder="DateOfBirth">
+                </div>
+
+                <div class="col-6">
+                    <label for="PersonalNationalIDNumber" class="form-label text-black">Personal National ID Number</label>
+                    <input disabled type="text" class="form-control" value="@Model.PersonalNationalIDNumber" id="PersonalNationalIDNumber" placeholder="PersonalNationalIDNumber">
+                </div>
+
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-3">
+                    <label for="StartWork" class="form-label text-black">Start Work</label>
+                    <input disabled type="text" class="form-control" value="@Model.StartWork" id="StartWork" placeholder="StartWork">
+                </div>
+
+                <div class="col-3">
+                    <label for="EndWork" class="form-label text-black">End Work</label>
+                    <input disabled type="text" class="form-control" value="@Model.EndWork" id="EndWork" placeholder="EndWork">
+                </div>
+                <div class="col-3">
+                    <label for="doctor" class="form-label text-black">Doctor</label>
+                    <input disabled type="number" class="form-control" value="@Model.Doctor.FirstName @Model.Doctor.LastName" id="ConsultationDuration" placeholder="Consultation Duration">
+                </div>
+                <div class="col-3">
+                    <label for="PersonalNationalIDCard" class="form-label text-black">Personal National ID Card</label>
+                    <div class="bg-white w-100 round-5">
+                        <a href="~/Files/PersonalNationalIDCard/@Model.PersonalNationalIDCard" target="_blank">Personal National ID Card </a>
+                    </div>
+                </div>
+               
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">
+                    <label for="Details" class="form-label text-black">Details</label>
+                    <input disabled type="text" class="form-control" value="@Model.Details" id="Details" placeholder="Details"> </input>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+</div>

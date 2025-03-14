@@ -1,0 +1,35 @@
+﻿@using CMS.Models.CuraHub.ClinicSection
+@using CMS.Models.Enums
+
+@{
+    ViewData["Title"] = "PayOption";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model PatientAppointment
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card mb-6 " style="width: 50%; height:30vh ;">
+        <div class="card-body">
+            <h5 class="card-title text-black">Payment Options</h5>
+            <form action="/Customer/CuraHub/Clinic/PatientAppointmentCard/PayOption" method="post">
+                <input type="hidden" name="PatientId" value="@Model.PatientId" />
+                <input type="hidden" name="ScheduleId" value="@Model.ScheduleId" />
+                <input type="hidden" name="date" value="@Model.date" />
+
+            <div class="form-check mt-3">
+                    <input class="form-check-input " type="radio" name="payment" id="creditCard" value="@PaymentOptions.CreditCard">
+                <label class="form-check-label text-black text-start d-block" for="creditCard">
+                    Credit Card
+                </label>
+            </div>
+            <div class="form-check  mt-3">
+                    <input class="form-check-input" type="radio" name="payment" id="cashOnDelivery" value="@PaymentOptions.CashOnDelivery">
+                <label class="form-check-label text-black text-start d-block" for="cashOnDelivery">
+                    Cash on Delivery 
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary  mt-3 ">Confirm reservation</button>
+            </form>
+        </div>
+    </div>
+</div>
+

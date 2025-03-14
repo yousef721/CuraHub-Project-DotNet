@@ -1,0 +1,101 @@
+﻿@using CMS.Models.CuraHub.IdentitySection.IdentitySectionVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        background-image: url('/Files/Images/group-doctors.avif');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+</style>
+@model ApplicationRolesVM
+
+<br />
+<div class="bg-white p-3 ">
+    <div class="row">
+        <div class="col-10">
+            <h1>All Roles</h1>
+        </div>
+
+    </div>
+    <br />
+    <div class="rounded-2  pb-2">
+        <form>
+            <div class="row">
+                <div class="col-4">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="query" id="exampleInputEmail1" placeholder="Search for Role">
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary mt-0">Search</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <br />
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" class="border border-dark">Id</th>
+                <th scope="col" class="border border-dark"> Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.roles)
+            {
+                <tr>
+                    <th scope="row" class="border border-dark">@item.Id</th>
+                    <th scope="row" class="border border-dark">@item.Name</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <div class="d-flex flex-row-reverse">
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                @for (int i = 1; i <= Model.TotalRoleCount; i++)
+                {
+
+                    <li class="page-item"><a class="page-link " href="/Admin/CuraHub/Identity/Role/Index?PageNumber=@i">@i</a></li>
+
+                }
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}
+

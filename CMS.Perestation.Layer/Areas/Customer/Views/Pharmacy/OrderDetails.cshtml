@@ -1,0 +1,155 @@
+﻿@using CMS.Models.CuraHub.PharmacySection.PharmacySectionVM
+@using CMS.Models.Enums
+@model MedicinesInOrderVM
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+    Layout = "~/Views/Shared/_PharmacyLayout.cshtml";
+    string statusClass = "";
+    string cancelButtonVisibility = "visible";
+    string cancelButtonText = "Cancel Order";
+
+    switch (Model.PharmacyOrder.ShipmentStatus)
+    {
+        case ShipmentStatus.RequestCancel:
+            statusClass = "text-warning";
+            cancelButtonVisibility = "d-none";
+            cancelButtonText = "Order Cancelled";
+            break;
+        case ShipmentStatus.Cancelled:
+            statusClass = "text-danger";
+            cancelButtonVisibility = "d-none";
+            cancelButtonText = "Order Canceled";
+            break;
+        case ShipmentStatus.Delivered:
+            statusClass = "text-success";
+            cancelButtonVisibility = "d-none";
+            cancelButtonText = "Order Delivered";
+            break;
+        default:
+            statusClass = "text-success"; 
+            break;
+    }
+}
+
+    <div class="card shadow-lg p-4">
+        <div class="text-center">
+            <h2 class="text-success fw-bold">Order Details</h2>
+            <p class="text-muted">Your order is @Model.PharmacyOrder.ShipmentStatus</p>
+        </div>
+        <hr>
+
+        @if (Model != null)
+        {
+            <div class="row">
+                <div class="col-lg-6 mb-3">
+                    <div class="card border-0 shadow-lg p-3">
+                        <h5 class="fw-bold text-primary">Order Details</h5>
+                        <p><strong>Order ID:</strong> @Model.PharmacyOrder.Id</p>
+                        <p><strong>Date:</strong> @Model.PharmacyOrder.DateTime.ToString("yyyy-MM-dd HH:mm")</p>
+                        <p><strong>Status:</strong> <span class="badge @statusClass">@Model.PharmacyOrder.ShipmentStatus</span></p>
+                        <p><strong>Total Price:</strong> <span class="fw-bold text-primary">EGP @Model.PharmacyOrder.TotalPrice.ToString("F2")</span></p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-3">
+                    <div class="card border-0 shadow-lg p-3">
+                        <h5 class="fw-bold text-primary">Customer Details</h5>
+                        @if (Model.PharmacyOrder.PharmacyCustomer != null)
+                        {
+                            <p><strong>Name:</strong> @($"{Model.PharmacyOrder.PharmacyCustomer.FirstName} {Model.PharmacyOrder.PharmacyCustomer.LastName}")</p>
+                            <p><strong>Email:</strong> <a href="mailto:@Model.PharmacyOrder.PharmacyCustomer.Email" class="text-decoration-none">@Model.PharmacyOrder.PharmacyCustomer.Email</a></p>
+                            <p><strong>Phone:</strong> @Model.PharmacyOrder.PharmacyCustomer.Phone</p>
+                            <p><strong>Address:</strong> @($"{Model.PharmacyOrder.PharmacyCustomer.Street}, {Model.PharmacyOrder.PharmacyCustomer.Region}, {Model.PharmacyOrder.PharmacyCustomer.City}, {Model.PharmacyOrder.PharmacyCustomer.State}")</p>
+                        }
+                        else
+                        {
+                            <p class="text-danger">Customer details not available.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-lg p-3 mt-4">
+                <h5 class="fw-bold text-primary">Ordered Medicines</h5>
+                @if (Model.MedicineOrder != null && Model.MedicineOrder.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle">
+                            <thead class="table-dark text-center">
+                                <tr>
+                                    <th>Medicine Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @foreach (var medicine in Model.MedicineOrder)
+                                {
+                                    <tr>
+                                        <td>@medicine.Medicine.Name</td>
+                                        <td>@medicine.MedicineCount</td>
+                                        <td>EGP @medicine.Medicine.Price.ToString("F2")</td>
+                                        <td class="fw-bold text-primary">EGP @(medicine.Medicine.Price * medicine.MedicineCount)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-warning">No medicines found in this order.</p>
+                }
+            </div>
+            <div class="text-center mt-4">
+                <a href="/Customer/CuraHub/Pharmacy/UserOrders" class="btn btn-secondary btn-lg">
+                    <i class="bi bi-arrow-left"></i> Back to Orders
+                </a>
+
+                @if (Model.PharmacyOrder.ShipmentStatus != ShipmentStatus.Cancelled && Model.PharmacyOrder.ShipmentStatus != ShipmentStatus.Delivered && Model.PharmacyOrder.ShipmentStatus != ShipmentStatus.RequestCancel)
+                {
+                    <button class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#cancelModal"
+                        onclick="showCancelModal(@Model.PharmacyOrder.Id)">
+                        <i class="bi bi-x-circle"></i> Cancel Order
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-secondary btn-lg" disabled>
+                        @cancelButtonText
+                    </button>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-danger text-center fw-bold">Order not found.</p>
+        }
+    </div>
+
+
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-black" id="cancelModalLabel">Confirm Cancellation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-bg-danger">
+                Are you sure you want to cancel this order?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a href="#" id="confirmCancel" class="btn btn-danger">Yes, Cancel Order</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showCancelModal(orderId) {
+        document.getElementById("confirmCancel").href = `/Customer/CuraHub/Pharmacy/RequestCancel?Id=${orderId}`;
+    }
+</script>

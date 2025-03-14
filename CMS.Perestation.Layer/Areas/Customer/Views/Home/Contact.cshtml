@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+<style>
+
+    body {
+        background-color: #e2e6ea;
+        background-image: none;
+    }
+
+    h1 {
+        color: black;
+    }
+
+</style>
+<br />
+
+<br />
+<br />
+<br />
+<div class="container p-2 bg-white  text-dark rounded-3">
+    <div class="row">
+        <div class="col-md-6">
+            <h2 style="color:#0070cd;">Contact Us</h2>
+            <p>Have questions or concerns? Feel free to reach out to us.</p>
+            <form asp-action="Create" asp-controller="Message" asp-area="Customer">
+                <div class="mb-3">
+                    <label for="SenderName" class="form-label">Your Name</label>
+                    <input type="text" class="form-control" id="SenderName" name="SenderName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="SenderEmail" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="SenderEmail" name="SenderEmail" required>
+                </div>
+                <div class="mb-3">
+                    <label for="SenderMessage" class="form-label">Your Message</label>
+                    <textarea class="form-control" id="SenderMessage" name="SenderMessage" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h2 style="color:#0070cd;">Contact Information</h2>
+            <p><strong>Address:</strong> El-dokki - 5 mosadak st , third floor</p>
+            <p><strong>Phone:</strong> +201068268354</p>
+            <p><strong>Email:</strong> info@CuraHub.com</p>
+            <p><strong>Working Hours:</strong> 09:00 AM - 10:00:PM</p>
+            <ul class="list-unstyled social-icons">
+                <li><a href="https://www.facebook.com/your-page"><i class="bi bi-facebook"></i> Facebook</a></li>
+                <li><a href="https://www.instagram.com/your-page"><i class="bi bi-instagram"></i> Instagram</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+﻿@using CMS.Models.CuraHub.IdentitySection.IdentitySectionVM
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        background-image: url('/Files/Images/group-doctors.avif');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+</style>
+
+
+@model LoginVM
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card mb-6" style="width: 70%;">
+        <h1 class="text-white" style="background-color:#0070cd">Login</h1>
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <form action="Login" method="post">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="Email" class="form-label text-start d-block">Email</label>
+                            <input type="text" name="Email" placeholder="Email" required="" class="form-control" id="FirstName" aria-describedby="emailHelp">
+                            <span asp-validation-for="Email" class="text-danger  text-start d-block"></span>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="Password" class="form-label  text-start d-block">Password</label>
+                            <input type="password" name="Password" placeholder="Password" required="" class="form-control" id="FirstName" aria-describedby="emailHelp">
+                            <span asp-validation-for="Password" class="text-danger  text-start d-block"></span>
+
+                        </div>
+                        <div class="wthree-text text-start d-block">
+                            <label class="anim">
+                                <input asp-for="RemeberMe" type="checkbox" class="checkbox">
+                                <span>Remeber Me</span>
+                            </label>
+                            <div class="clear"> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <button type="submit" style="width:90%" class="btn btn-primary">Login</button>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <p>Don't have an Account? <a href="/Identity/Account/Register"> Sign Up Now!</a></p>
+        <p><a href="/Identity/Account/ForgetPassword"> Forget Password</a></p>
+        <hr/>
+        <p>Other log in options</p>
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-1">
+                <a asp-action="LoginWithFacebook"><img src="~/Files/Images/facebook.webp" style="width:40px;" /></a>
+            </div>
+            <div class="col-1">
+                <a asp-action="LoginWithGoogle"><img src="~/Files/Images/google.jpg" style="width:50px;" /></a>
+            </div>
+            <div class="col-5"></div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+@section Scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}

@@ -1,0 +1,99 @@
+﻿@using CMS.Models.CuraHub.IdentitySection.IdentitySectionVM
+
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model ProfileVM
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        background-image: url('/Files/Images/group-doctors.avif');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+</style>
+
+
+<br />
+<br />
+<br />
+
+<div class="card mb-6 p-3" style="max-width: 100%;">
+    <form action="Profile" enctype="multipart/form-data" method="post">
+        <input type="hidden" value="@Model.Id" name="Id" />
+        <div class="row g-0">
+
+            <div class="col-md-8">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="FirstName" class="form-label">First Name</label>
+                                <input type="text" name="FirstName" value="@Model.FirstName" class="form-control  text-start d-block" id="FirstName" aria-describedby="emailHelp">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="LastName" class="form-label">Last Name</label>
+                                <input type="text" name="LastName" value="@Model.LastName" class="form-control  text-start d-block" id="LastName" aria-describedby="emailHelp">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="text" name="Email" disabled value="@Model.Email" class="form-control  text-start d-block" id="FirstName" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="UserName" class="form-label">User Name</label>
+                        <input type="text" name="UserName" disabled value="@Model.UserName" class="form-control  text-start d-block" id="FirstName" aria-describedby="emailHelp">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <img id="preview" src="~/Files/Images/profiles/@Model.ProfilePicture" alt="Image Preview" style=" max-width: 300px; max-height: 300px;">
+                </div>
+                <div class="mb-3">
+                    <label for="ProfilePicture" class="form-label">Profile Picture</label>
+                    <input type="file" accept="image/*" class="form-control" name="file" id="ProfilePicture" placeholder="ProfilePicture" onchange="previewImage(event)">
+                </div>
+            </div>
+
+        </div>
+        <div class="row g-0">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <button type="submit" style="width:90%" class="btn btn-primary mt-0">Save Changes</button>
+                    <br />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <a href="/Identity/Account/ChangePassword" style="width:90%" class="btn btn-secondary">Change Password</a>
+                    <br />
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>

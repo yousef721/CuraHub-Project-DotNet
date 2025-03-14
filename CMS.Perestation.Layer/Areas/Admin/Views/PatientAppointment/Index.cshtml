@@ -1,0 +1,99 @@
+﻿@using CMS.Models.CuraHub.ClinicSection
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+<style>
+
+    body {
+        background-color: #e2e6ea;
+        background-image: none;
+    }
+
+    h1 {
+        color: black;
+    }
+
+</style>
+
+<h1>
+    <img src="~/Files/Images/فلسطين.svg" class="rounded-circle " style="width: 50px;" />
+</h1>
+
+
+@model List<PatientAppointment>
+
+<br />
+
+
+<div class="bg-white p-3 mt-3">
+
+<form>
+    <div class="row">
+        <div class="col-4">
+            <div class="mb-3">
+                <input type="text" class="form-control" name="query" id="SearchInput" placeholder="Search for Clinic Patient Appointment">
+            </div>
+        </div>
+
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary mt-0">Search</button>
+
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-12">
+        <h1 >All Clinic Patient Appointment</h1>
+    </div>
+    
+</div>
+<br />
+
+
+<table class="table" style="border:solid">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col" style="text-align:center">Patient Name</th>
+            <th scope="col" style="text-align:center">Date</th>
+            <th scope="col" style="text-align:center">Day</th>
+            <th scope="col" style="text-align:center">Appointment</th>
+            <th scope="col" style="text-align:center">Doctor Name</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="border:solid">
+                <th scope="row" style="border:solid"><a href="/Admin/CuraHub/Clinic/Patient/Details?PatientId=@item.PatientId">@item.Patient.FirstName @item.Patient.LastName</a> </th>
+                <th scope="row" style="border:solid">@item.date</th>
+                <th scope="row" style="border:solid">@item.Schedule.Day</th>
+                <th scope="row" style="border:solid">@item.Schedule.Appointment</th>
+                <th scope="row" style="border:solid"><a href="/Admin/CuraHub/Clinic/Doctor/Details?DoctorId=@item.Schedule.DoctorId">@item.Schedule.Doctor.FirstName @item.Schedule.Doctor.LastName</a></th>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex flex-row-reverse">
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            @for (int i = 1; i <= (Model.Count() + 4) / 5; i++)
+            {
+
+                <li class="page-item"><a class="page-link " href="/Admin/Actor/Index?PageNumber=@i">@i</a></li>
+
+            }
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+
+
+</div>
+
+</div>

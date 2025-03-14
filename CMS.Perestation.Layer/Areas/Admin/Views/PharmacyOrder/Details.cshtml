@@ -1,0 +1,168 @@
+﻿@using CMS.Models.Enums
+@model List<CMS.Models.CuraHub.PharmacySection.PharmacySectionVM.MedicineOrderVM>
+
+@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+    var shipmentStatus = Model.FirstOrDefault()?.PharmacyOrder.ShipmentStatus;
+    var statusClass = shipmentStatus == ShipmentStatus.Cancelled ? "bg-danger text-white" 
+                     : shipmentStatus == ShipmentStatus.Delivered ? "bg-success text-white" 
+                     : "bg-info text-white";
+    var isOrderCompleted = shipmentStatus == ShipmentStatus.Cancelled || shipmentStatus == ShipmentStatus.Delivered;
+    var buttonText = shipmentStatus == ShipmentStatus.Cancelled ? "Order Cancelled" 
+                     : shipmentStatus == ShipmentStatus.Delivered ? "Order Delivered" 
+                     : "Cancel Order";
+    var buttonClass = isOrderCompleted ? "btn-secondary disabled" : "btn-outline-danger";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 rounded">
+        <!-- Page Header with Back to List Button -->
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+            <h2 class="text-primary fw-bold">
+                <i class="fa-solid fa-file-invoice-dollar me-2"></i> Order Details
+            </h2>
+            <a asp-action="Index" asp-route-pageNumber="@ViewBag.currentPage" 
+                class="btn btn-outline-secondary btn-lg shadow-sm">
+                <i class="fa-solid fa-arrow-left me-2"></i> Back to List
+            </a>
+        </div>
+
+        <!-- Order Information -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-light text-dark fw-bold">
+                <h4 class="mb-0"><i class="fa-solid fa-receipt me-2"></i> Order Information</h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <p><i class="fa-solid fa-hashtag me-2"></i> <strong>Order ID:</strong> @Model.FirstOrDefault()?.PharmacyOrder.Id</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="fa-solid fa-calendar-days me-2"></i> <strong>Order Date:</strong> @Model.FirstOrDefault()?.PharmacyOrder.DateTime.ToString("yyyy-MM-dd")</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="fa-solid fa-user text-success me-2"></i> <strong>Customer:</strong> @Model.FirstOrDefault()?.PharmacyOrder.PharmacyCustomer.FirstName @Model.FirstOrDefault()?.PharmacyOrder.PharmacyCustomer.LastName</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="fa-solid fa-percent me-2"></i> <strong>Discount:</strong> <span class="badge bg-warning text-dark">@Model.FirstOrDefault()?.PharmacyOrder.Discount%</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery, Address, and Shipment Status -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-light text-dark fw-bold">
+                <h4 class="mb-0"><i class="fa-solid fa-truck me-2"></i> Delivery & Shipment Details</h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <p><i class="fa-solid fa-person-biking me-2"></i> <strong>Delivery Rep:</strong> 
+                            @Model.FirstOrDefault()?.PharmacyOrder.PharmacyDeliveryRepresentative?.FirstName 
+                            @Model.FirstOrDefault()?.PharmacyOrder.PharmacyDeliveryRepresentative?.LastName
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><i class="fa-solid fa-map-marker-alt me-2"></i> <strong>Address:</strong> 
+                            @Model.FirstOrDefault()?.PharmacyOrder.PharmacyCustomer.Region, 
+                            @Model.FirstOrDefault()?.PharmacyOrder.PharmacyCustomer.State, 
+                            @Model.FirstOrDefault()?.PharmacyOrder.PharmacyCustomer.City, 
+                            @Model.FirstOrDefault()?.PharmacyOrder.PharmacyCustomer.Street
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <p><i class="fa-solid fa-box-open me-2"></i> <strong>Shipment Status:</strong> 
+                            <span class="badge @statusClass">@shipmentStatus</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medicines in Order -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-light text-dark fw-bold">
+                <h4 class="mb-0"><i class="fa-solid fa-pills me-2"></i> Medicines in Order</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover table-bordered text-center align-middle">
+                    <thead class="bg-white text-dark fw-bold border">
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var medicineOrder in Model)
+                            {
+                                <tr>
+                                    <td>@medicineOrder.Medicine.Name</td>
+                                    <td>@medicineOrder.Medicine.Price EGP</td>
+                                    <td>@medicineOrder.MedicineCount</td>
+                                    <td><strong>@(medicineOrder.Medicine.Price * medicineOrder.MedicineCount) EGP</strong></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-muted">No medicines found in this order.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <h5 class="text-center text-success mt-3">
+                    <strong>
+                        Total Price: @(Model.Sum(m => m.Medicine.Price * m.MedicineCount)) EGP
+                    </strong>
+                </h5>
+            </div>
+        </div>
+
+        <!-- Cancel Order Button -->
+        <div class="d-flex justify-content-end">
+            <a href="javascript:void(0);" 
+            onclick="showCancelModal('@Model.FirstOrDefault()?.PharmacyOrder.Id', '@ViewBag.currentPage')" 
+            class="btn @buttonClass btn-lg shadow-sm" 
+            data-bs-toggle="modal" data-bs-target="#cancelModal">
+                @if (!isOrderCompleted)
+                {
+                    <i class="fa-solid fa-times-circle me-2"></i>
+                }
+                @buttonText
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Cancel Confirmation Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-black" id="cancelModalLabel">Confirm Cancellation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-bg-danger">
+                Are you sure you want to cancel this order?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <a href="#" id="confirmCancel" class="btn btn-danger">Yes, Cancel Order</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showCancelModal(orderId, pageNumber) {
+        document.getElementById("confirmCancel").href = "/Admin/CuraHub/Pharmacy/PharmacyOrder/CancelOrder?id=" + orderId + "&pageNumber=" + pageNumber;
+    }
+</script>

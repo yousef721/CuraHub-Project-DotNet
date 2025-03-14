@@ -1,0 +1,239 @@
+﻿@using CMS.Models.CuraHub.ClinicSection.ClinicSectionVM.PatientVM
+@using CMS.Utitlities.StaticData
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+    var cities = City.cities;
+}
+<style>
+
+    body {
+        background-color: #e2e6ea;
+        background-image: none;
+    }
+
+    h1 {
+        color: black;
+    }
+
+</style>
+
+@model Admin_PatientsVM
+
+<br />
+<br />
+
+<div class="row">
+    <div class="col-12">
+        <h1>All Patients</h1>
+    </div>
+</div>
+<br />
+<div class="bg-white p-3">
+    <div class="rounded-2 bg-white pb-2">
+    <form>
+        <br />
+
+        <div class="row">
+            <div class="row">
+                <div class="col-3 ms-2">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="query" id="SearchInput" placeholder="Search By Patient Name">
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <select class="form-select" id="mySelect" name="State" aria-label="Default select example">
+                        <option value="@null" selected>Select State</option>
+                        <option value="Alexandria">Alexandria</option>
+                        <option value="Aswan">Aswan</option>
+                        <option value="Asyut">Asyut</option>
+                        <option value="Beheira">Beheira</option>
+                        <option value="Beni Suef">Beni Suef</option>
+                        <option value="Cairo">Cairo</option>
+                        <option value="Dakahlia">Dakahlia</option>
+                        <option value="Damietta">Damietta</option>
+                        <option value="Faiyum">Faiyum</option>
+                        <option value="Gharbia">Gharbia</option>
+                        <option value="Giza">Giza</option>
+                        <option value="Ismailia">Ismailia</option>
+                        <option value="Kafr el-Sheikh">Kafr el-Sheikh</option>
+                        <option value="Luxor">Luxor</option>
+                        <option value="Matrouh">Matrouh</option>
+                        <option value="Minya">Minya</option>
+                        <option value="Monufia">Monufia</option>
+                        <option value="New Valley">New Valley</option>
+                        <option value="North Sinai">North Sinai</option>
+                        <option value="Port Said">Port Said</option>
+                        <option value="Qalyubia">Qalyubia</option>
+                        <option value="Qena">Qena</option>
+                        <option value="Red Sea">Red Sea</option>
+                        <option value="Sohag">Sohag</option>
+                        <option value="South Sinai">South Sinai</option>
+                        <option value="Suez">Suez</option>
+                        <option value="Sharqia">Sharqia</option>
+                    </select>
+
+                </div>
+                <div class="col-2">
+                    <select class="form-select" name="City" id="regionSelect" aria-label="Default select example">
+                        <option value="@null" selected>Select Region</option>
+
+                    </select>
+
+                </div>
+                <div class="col-2">
+                   <button type="submit" class="btn btn-primary mt-0">Search</button>
+                </div>
+            
+            </div>
+
+
+        </div>
+    </form>
+</div>
+    <br />
+    
+    <table class="table" style="border:solid">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col" style="text-align:center">ID</th>
+            <th scope="col" style="text-align:center">Name</th>
+            <th scope="col" style="text-align:center">Phone</th>
+            <th scope="col" style="text-align:center">Email</th>
+            <th scope="col" style="text-align:center">More Details</th>
+            <th scope="col" style="text-align:center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Patients)
+        {
+            <tr style="border:solid">
+                <th scope="row" style="border:solid">@item.Id</th>
+                <th scope="row" style="border:solid">@item.FirstName @item.LastName</th>
+                <th scope="row" style="border:solid">@item.Phone</th>
+                <th scope="row" style="border:solid">@item.Email</th>
+                <th scope="row" style="border:solid;text-align:center"><a class="dropdown-item" href="/Admin/CuraHub/Clinic/Patient/Details?PatientId=@item.Id">Details</a></th>
+                    <td style="border:solid">
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                        <button type="button" class="btn btn-primary mt-0">Action</button>
+                        <div class="btn-group" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-primary mt-0 dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                @* <a class="dropdown-item" href="/Admin/CuraHub/Clinic/Doctor/CreateEdit?DoctorId=@item.Id">Edit</a> *@
+                                @* <a class="dropdown-item" href="/Admin/CuraHub/Clinic/Patient/Delete?PatientId=@item.Id" onclick="return confirm('are you sure?')">Delete</a> *@
+
+                                <a class="dropdown-item delete-btn"
+                                   data-Patient-id="@item.Id"
+                                   data-Patient-name="@item.FirstName" + "@item.LastName"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#deleteModal">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+    
+    <div class="d-flex flex-row-reverse">
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            @for (int i = 1; i <= (Model.TotalPatientCount+ 4) / 5; i++)
+            {
+
+                <li class="page-item"><a class="page-link " href="/Admin/CuraHub/Clinic/Patient/Index?PageNumber=@i">@i</a></li>
+
+            }
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+
+
+</div>
+
+</div>
+
+
+
+<script>
+        var cities = @Html.Raw(Json.Serialize(cities));
+
+    $(document).ready(function () {
+      $('#mySelect').change(function () {
+        var selectedState = $(this).val();
+        var regionSelect = $('#regionSelect');
+
+        // Clear previous options
+        regionSelect.empty();
+
+        if (selectedState) {
+          var availableCities = cities[selectedState];
+            regionSelect.append('<option value="@null" selected>Select Region</option>');
+            regionSelect.append('<option value="@null" >All Region</option>');
+          if (availableCities) {
+            for (var i = 0; i < availableCities.length; i++) {
+              regionSelect.append('<option value="' + availableCities[i] + '">' + availableCities[i] + '</option>');
+            }
+          }
+        }
+      });
+    });
+</script>
+
+
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the Clinic Receptionist <strong id="modalPatientName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Attach event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const PatientId = this.getAttribute('data-Patient-id');
+            const PatientName = this.getAttribute('data-Patient-name');
+
+            // Set the category name in the modal
+            document.getElementById('modalPatientName').textContent = PatientName;
+
+            // Update the delete link to include the categoryId
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            confirmDeleteBtn.href = `/Admin/CuraHub/Clinic/Patient/Delete?PatientId=${PatientId}`;
+        });
+    });
+</script>
+
+
+
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}

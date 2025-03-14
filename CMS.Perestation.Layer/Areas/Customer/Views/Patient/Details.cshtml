@@ -1,0 +1,150 @@
+﻿@using CMS.Models.CuraHub.ClinicSection
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model Patient
+<br />
+<br />
+<br />
+
+<div class="bg-white bg-opacity-100 rounded-2 p-2">
+
+    <h1>
+        <img src="~/Files/Images/فلسطين.svg" class="rounded-circle " style="width: 50px;" />
+    </h1>
+    <h2 class="text-black">
+        Details For Patient : @Model.FirstName @Model.LastName
+    </h2>
+
+    <div class="row">
+        <form>
+            <div class="row">
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="FirstName" class="form-label text-black  text-start d-block">First Name</label>
+                                <input disabled type="text" required="" class="form-control" value="@Model.FirstName" id="FirstName" name="FirstName" placeholder="First Name">
+
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="LastName" class="form-label  text-black  text-start d-block">Last Name</label>
+                                <input disabled type="text" required="" class="form-control" value="@Model.FirstName" id="LastName" name="LastName" placeholder="Last Name">
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="Email" class="form-label  text-black  text-start d-block">Email</label>
+                                <input type="text" disabled class="form-control" value="@Model.Email" id="Email" name="Email" placeholder="Email">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="Phone" class="form-label  text-black  text-start d-block">Phone ( Optional )</label>
+                                <input type="text" disabled class="form-control" value="@Model.Phone" id="Phone" name="Phone" placeholder="Phone">
+
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="Phone" class="form-label  text-black  text-start d-block">Phone ( Optional )</label>
+                                <input type="text" disabled class="form-control" value="@Model.Occupation" id="Occupation" name="Occupation" placeholder="Occupation">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-4">
+
+                    <div class="mb-3">
+                        <img id="preview" src="~/Files/Images/PatientPictures/PatientDefault.avif" alt="Image Preview" style=" width:100%">
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label for="mySelect" class="form-label text-black">State  ( Optional )</label>
+                    <input type="text" disabled class="form-control" value="@Model.State" id="State" name="State" placeholder="State">
+                </div>
+                <div class="col-3">
+                    <label for="regionSelect" class="form-label text-black">City</label>
+                    <input type="text" disabled class="form-control" value="@Model.City" id="City" name="City" placeholder="City">
+
+                </div>
+                <div class="col-3">
+                    <label for="Region" class="form-label text-black">Region</label>
+                    <input type="text" disabled class="form-control" value="@Model.Region" id="Region" name="Region" placeholder="Region">
+
+
+
+                </div>
+                <div class="col-3">
+                    <label for="Street" class="form-label text-black">Street</label>
+                    <input type="text" disabled class="form-control" value="@Model.Street" id="Street" name="Street" placeholder="Street">
+                    <span class="text-danger" asp-validation-for="@Model.Street"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4">
+                    <label for="Gender" class="form-label text-black">Gender  </label>
+                    <input type="text" disabled class="form-control" value="@Model.Gender" id="Gender" name="Gender" placeholder="Gender">
+
+                </div>
+                <div class="col-4">
+                    <label for="BloodType" class="form-label text-black">Blood Type</label>
+                    <input type="text" disabled class="form-control" value="@Model.BloodType" id="BloodType" name="BloodType" placeholder="BloodType">
+
+                </div>
+                <div class="col-4">
+                    <label for="Marital Status" class="form-label text-black">Marital Status</label>
+                    <input type="text" disabled class="form-control" value="@Model.MaritalStatus" id="MaritalStatus" name="MaritalStatus" placeholder="MaritalStatus">
+
+                </div>
+            </div>
+            <div class="row">
+
+
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="DateOfBirth" class="form-label text-black  text-start d-block">Date Of Birth</label>
+                        <input type="text" disabled class="form-control" value="@Model.DateOfBirth" id="DateOfBirth" name="DateOfBirth" placeholder="Date Of Birth">
+
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="PersonalNationalIDNumber" class="form-label text-black  text-start d-block">Personal National ID Number</label>
+                        <input disabled type="text" class="form-control" value="@Model.PersonalNationalIDNumber" id="PersonalNationalIDNumber" name="PersonalNationalIDNumber" placeholder="Personal National ID Number">
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+
+</div>
+
+

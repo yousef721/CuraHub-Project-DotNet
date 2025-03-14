@@ -1,0 +1,93 @@
+﻿@using CMS.Utitlities.StaticData
+@model CMS.Models.CuraHub.PharmacySection.PharmacySectionVM.PharmacyCustomerVM
+
+@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+    <h1 class="m-3 fw-bold">Edit Customer</h1>
+    <div class="card shadow p-4 rounded">
+        <form asp-action="Edit" method="post" class="needs-validation" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" name="pageNumber" value="@ViewBag.currentPage"/>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="FirstName" class="control-label">First Name</label>
+                    <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="FirstName"></span>
+                    </div>                
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="LastName" class="control-label">Last Name</label>
+                    <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="FirstName"></span>
+                    </div>               
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Email" class="control-label">Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="Email"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Phone" class="control-label">Phone Number</label>
+                    <input asp-for="Phone" class="form-control" type="tel" placeholder="Phone Number" />
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="Phone"></span>
+                    </div>                       
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="State" class="control-label">State</label>
+                    <select class="form-control" asp-for="State">
+                        <option selected>Select State</option>
+                        @foreach (var item in State.States)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="State"></span>
+                    </div> 
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="City" class="control-label">City</label>
+                    <select class="form-control" asp-for="City">
+                        <option selected>Select City</option>
+                        @foreach (var item in CMS.Utitlities.StaticData.City.cities)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="City"></span>
+                    </div>                 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Region" class="control-label">Region</label>
+                    <input asp-for="Region" class="form-control" placeholder="Region" />
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="Region"></span>
+                    </div>        
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Street" class="control-label">Street</label>
+                    <input asp-for="Street" class="form-control" placeholder="Street" />
+                    <div class="invalid-feedback">
+                        <span asp-validation-for="Street"></span>
+                    </div>                      
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Save</button>
+            <a asp-action="Index" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-secondary mt-3">Cancel</a>
+        </form>
+    </div>
+

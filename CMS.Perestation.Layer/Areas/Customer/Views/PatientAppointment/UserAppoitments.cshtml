@@ -1,0 +1,90 @@
+﻿@using CMS.Models.CuraHub.ClinicSection
+
+@{
+    ViewData["Title"] = "UserAppoitments";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model List<PatientAppointment>
+<div class="min-vh-100">
+
+    <br />
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>warning!</strong> your Appointments with Dctcor will removed After 3 days from Constantant Day , please keep your data if you like.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+ </div>
+
+<br />
+<h1>
+    <img src="~/Files/Images/فلسطين.svg" class="rounded-circle " style="width: 50px;" />
+</h1>
+
+<div class="bg-white p-2 m-2">
+    <table class="table" style="border:solid">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col" style="text-align:center">Date</th>
+                <th scope="col" style="text-align:center">Day</th>
+                <th scope="col" style="text-align:center">Appointment</th>
+                <th scope="col" style="text-align:center">Patient Name</th>
+                <th scope="col" style="text-align:center">Details</th>
+                <th scope="col" style="text-align:center">Medical Analysis</th>
+                <th scope="col" style="text-align:center">Doctor</th>
+                <th scope="col" style="text-align:center">Payment</th>
+                    <th scope="col" style="text-align:center">MedicalPrescription</th>
+
+                @* <th scope="col" style="text-align:center">Actions</th> *@
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="border:solid">
+
+                    <th scope="row" style="border:solid">@item.date</th>
+                    <th scope="row" style="border:solid">@item.Schedule.Day</th>
+                    <th scope="row" style="border:solid">@item.Schedule.Appointment</th>
+                    <th scope="row" style="border:solid">@item.Patient.FirstName @item.Patient.LastName </th>
+                    <th scope="row" style="border:solid"><a target="_blank" href="/Customer/CuraHub/Clinic/Patient/Details?PatientId=@item.PatientId">Details</a></th>
+                    <th scope="row" style="border:solid"><a target="_blank" href="#">Medical Analysis</a></th>
+                        <th scope="row" style="border:solid"><a target="_blank" href="/Customer/CuraHub/Clinic/Doctor/Details?DoctorId=@item.Schedule.DoctorId&DetailsForUser=@true">@item.Schedule.Doctor.FirstName @item.Schedule.Doctor.LastName</a></th>
+                    @if(item.paid)
+                    {
+                            <th scope="row" style="border:solid"><button disabled class="btn btn-success mt-0">Complete</button></th>
+
+                    }
+                    else
+                    {
+                            <th scope="row" style="border:solid"><button disabled class="btn btn-warning mt-0">not Complete</button></th>
+
+                    }
+                    @if (item.MedicalPrescriptions == null)
+                    {
+                            <th scope="row" style="border:solid"></th>
+
+                    }
+                    else
+                    {
+                            <th scope="row" style="border:solid"><a class="btn btn-success" href="/Customer/CuraHub/Clinic/MedicalPrescription/Index?ScheduleId=@item.ScheduleId&PatientId=@item.PatientId&Date=@item.date">Medical Prescription</a></th>
+
+                    }
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        // فحص إذا كان هناك رسالة في الـ TempData
+        var message = '@TempData["SuccessMessage"]';
+        if (message) {
+            toastr.success(message);
+        }
+    });
+</script>

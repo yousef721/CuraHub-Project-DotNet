@@ -1,0 +1,156 @@
+﻿@using CMS.Models.CuraHub.ClinicSection
+
+@{
+    ViewData["Title"] = "ShowDoctorSchedule";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+
+<br />
+<br />
+<br />
+
+@model List<Schedule>
+
+<table class="table border border-2 border-black" style="border:solid">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col" style="text-align:center">@DayOfWeek.Saturday</th>
+            <th scope="col" style="text-align:center">@DayOfWeek.Sunday</th>
+            <th scope="col" style="text-align:center">@DayOfWeek.Monday</th>
+            <th scope="col" style="text-align:center">@DayOfWeek.Tuesday</th>
+            <th scope="col" style="text-align:center">@DayOfWeek.Wednesday</th>
+            <th scope="col" style="text-align:center">@DayOfWeek.Thursday</th>
+            <th scope="col" style="text-align:center">@DayOfWeek.Friday</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="border border-2 border-black">
+            <td style="text-align:center" class="border border-2 border-black">
+                @foreach (var item in Model.Where(s => s.Day == DayOfWeek.Saturday))
+                {
+                    <div class="m-2">
+                        <span>@item.Appointment</span> <span>
+                            @if (item.Available)
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/LockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-primary">Available</a>
+                            }
+                            else
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/UnLockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-danger">Unavailable</a>
+
+                            }
+                        </span>
+                    </div>
+                }
+            </td>
+            <td style="text-align:center" class="border border-2 border-black">
+                @foreach (var item in Model.Where(s => s.Day == DayOfWeek.Sunday))
+                {
+                    <div class="m-2">
+                        <span>@item.Appointment</span> <span>
+                            @if (item.Available)
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/LockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-primary">Available</a>
+                            }
+                            else
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/UnLockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-danger">Unavailable</a>
+
+                            }
+                        </span>
+                    </div>
+                }
+            </td>
+            <td style="text-align:center" class="border border-2 border-black">
+                @foreach (var item in Model.Where(s => s.Day == DayOfWeek.Monday))
+                {
+                    <div class="m-2">
+                        <span >@item.Appointment</span> <span >
+                            @if (item.Available)
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/LockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-primary">Available</a>
+                            }
+                            else
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/UnLockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-danger">Unavailable</a>
+
+                            }
+                        </span>
+                    </div>
+                }
+            </td>
+            <td style="text-align:center" class="border border-2 border-black">
+                @foreach (var item in Model.Where(s => s.Day == DayOfWeek.Tuesday))
+                {
+                    <div class="m-2">
+                        <span>@item.Appointment</span> <span>
+                            @if (item.Available)
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/LockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-primary">Available</a>
+                            }
+                            else
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/UnLockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-danger">Unavailable</a>
+
+                            }
+                        </span>
+                    </div>
+                }
+            </td>
+            <td style="text-align:center" class="border border-2 border-black">
+                @foreach (var item in Model.Where(s => s.Day == DayOfWeek.Wednesday))
+                {
+                    <div class="m-2">
+                        <span>@item.Appointment</span> <span>
+                            @if (item.Available)
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/LockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-primary">Available</a>
+                            }
+                            else
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/UnLockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-danger">Unavailable</a>
+
+                            }
+                        </span>
+                    </div>
+                }
+            </td>
+            <td style="text-align:center" class="border border-2 border-black">
+                @foreach (var item in Model.Where(s => s.Day == DayOfWeek.Thursday))
+                {
+                    <div class="m-2">
+                        <span>@item.Appointment</span> <span>
+                            @if (item.Available)
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/LockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-primary">Available</a>
+                            }
+                            else
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/UnLockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-danger">Unavailable</a>
+
+                            }
+                        </span>
+                    </div>
+                }
+            </td>
+            <td style="text-align:center" class="border border-2 border-black">
+                @foreach (var item in Model.Where(s => s.Day == DayOfWeek.Friday))
+                {
+                    <div class="m-2">
+                        <span>@item.Appointment</span> <span>
+                            @if (item.Available)
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/LockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-primary">Available</a>
+                            }
+                            else
+                            {
+                                <a href="/Admin/CuraHub/Clinic/Schedule/UnLockAvailable?ScheduleId=@item.Id&DoctorId=@item.DoctorId" class="btn btn-danger">Unavailable</a>
+
+                            }
+                        </span>
+                    </div>
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,82 @@
+﻿.options {
+    /* display: flex; */
+    gap: 10px;
+}
+
+.option {
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .option:hover {
+        background-color: #f0f0f0;
+    }
+
+    .option.selected {
+        background-color: #747a77;
+        color: white;
+    }
+
+/* Star styling */
+.DetailsRating {
+    direction: rtl; /* To make stars start from the right */
+    unicode-bidi: bidi-override;
+    font-size: 2rem;
+    display: inline-block;
+}
+
+    .DetailsRating input {
+        display: none; /* Hide input elements */
+    }
+
+.DetailsRating label {
+color: #ddd; /* Color of unselected stars */
+cursor: pointer;
+}
+
+.DetailsRating label:hover,
+.DetailsRating label:hover ~ label,
+.DetailsRating input:checked ~ label {
+            color: #ffc107; /* Color of selected stars */
+        }
+/* Button styling */
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+<style >
+.notification-container {
+    position: relative;
+}
+
+.notification-list {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: white;
+    color: black;
+    width: 250px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+    .notification-list.active {
+        display: block;
+    }
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+    .notification-item:last-child {
+        border-bottom: none;
+    }
+
+</style >
+

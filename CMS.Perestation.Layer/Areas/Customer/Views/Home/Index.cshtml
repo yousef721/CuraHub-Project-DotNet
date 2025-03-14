@@ -1,0 +1,319 @@
+﻿@using CMS.Data.Access.Layer.Repository.IRepository
+@using CMS.Utitlities.StaticData
+@inject IUnitOfWork _unitOfWork
+@{
+    var specializations = _unitOfWork.SpecializationRepository.Retrive();
+    var cities = City.cities; // Use a dictionary to store cities for each state
+
+    // Assuming you have a method to retrieve cities based on state
+
+
+}
+
+<style>
+
+    body {
+        background-color: #d6d7d8;
+        background-image: none;
+    }
+
+    .mainSection {
+        background-image: url('/Files/Images/group-doctors.avif');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        display: flex;
+        justify-content: center; /* توسيط أفقي */
+        align-items: center;
+        transition: background 5s ease-in-out;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .container {
+        all: unset;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 0 !important; /* يزيل التدوير */
+    }
+
+</style>
+
+@{
+    ViewData["Title"] = "Service";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+
+@* <img src="~/Files/Images/فلسطين.svg" class="rounded-circle " style="width: 50px;" /> *@
+
+<div class="vh-100  mainSection">
+    <div class="card text-center  mt-5 rounded-3" style="width:95%;">
+        <div class="card-header">
+            <h2>Book an appointment with doctor</h2>
+            <h3>
+                <i class="bi bi-activity"></i>
+                Examination or procedure
+            </h3>
+
+        </div>
+        <div class="card-body" style="height:150px">
+            <div class="rounded-2 bg-white ">
+                <form action="/Customer/CuraHub/Clinic/Doctor/Index">
+                    <br />
+
+                    <div class="row">
+                        <div class="col-10 ">
+                            <div class="row">
+                                <div class="col-3  form-floating  me-0 pe-0 ms-0 ps-0">
+
+                                    <select class="form-select" name="SpecializationId" aria-label="Default select example">
+                                        <option selected value="@null">Select speciality</option>
+                                        @foreach (var specialization in specializations)
+                                        {
+                                            <option value="@specialization.Id">@specialization.Name</option>
+                                        }
+
+                                    </select>
+                                    <label class="ms-2" for="floatingInput">Select speciality</label>
+
+
+                                </div>
+                                <div class="col-3  form-floating  me-0 pe-0 ms-0 ps-0">
+
+                                    <select class="form-select" id="mySelect" name="State" aria-label="Default select example">
+                                        <option value="@null" selected>Select State</option>
+                                        <option value="Alexandria">Alexandria</option>
+                                        <option value="Aswan">Aswan</option>
+                                        <option value="Asyut">Asyut</option>
+                                        <option value="Beheira">Beheira</option>
+                                        <option value="Beni Suef">Beni Suef</option>
+                                        <option value="Cairo">Cairo</option>
+                                        <option value="Dakahlia">Dakahlia</option>
+                                        <option value="Damietta">Damietta</option>
+                                        <option value="Faiyum">Faiyum</option>
+                                        <option value="Gharbia">Gharbia</option>
+                                        <option value="Giza">Giza</option>
+                                        <option value="Ismailia">Ismailia</option>
+                                        <option value="Kafr el-Sheikh">Kafr el-Sheikh</option>
+                                        <option value="Luxor">Luxor</option>
+                                        <option value="Matrouh">Matrouh</option>
+                                        <option value="Minya">Minya</option>
+                                        <option value="Monufia">Monufia</option>
+                                        <option value="New Valley">New Valley</option>
+                                        <option value="North Sinai">North Sinai</option>
+                                        <option value="Port Said">Port Said</option>
+                                        <option value="Qalyubia">Qalyubia</option>
+                                        <option value="Qena">Qena</option>
+                                        <option value="Red Sea">Red Sea</option>
+                                        <option value="Sohag">Sohag</option>
+                                        <option value="South Sinai">South Sinai</option>
+                                        <option value="Suez">Suez</option>
+                                        <option value="Sharqia">Sharqia</option>
+                                    </select>
+
+                                    <label class="ms-2" for="floatingInput">Select State</label>
+
+
+                                </div>
+                                <div class="col-3  form-floating  me-0 pe-0 ms-0 ps-0">
+                                    <select class="form-select" name="City" id="regionSelect" aria-label="Default select example">
+                                        <option value="@null" selected>Select Region</option>
+
+                                    </select>
+                                    <label class="ms-2" for="floatingInput">Select Region</label>
+
+                                </div>
+                                <div class="col-3  form-floating  me-0 pe-0 ms-0 ps-0">
+
+                                    <input type="text" class="form-control" name="query" id="SearchInput" placeholder="">
+                                    <label class="ms-2" for="floatingInput">Search By Doctor Name</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary mt-0 w-100 h-100"><i class="bi bi-search"></i> Search</button>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div>
+    <div class="card text-center m-auto mt-5 " style="width:95%">
+        @* <div class="card-header"> *@
+        @*     <h2><i class="bi bi-capsule"></i> Have a Medical Question?</h2> *@
+        @* </div> *@
+        <div class="card-body">
+            <div class="row">
+                <div class="col-10">
+                    <h5 class="card-title"><i class="bi bi-person-raised-hand"></i> Have a Medical Question? </h5>
+                    <p class="card-text">Submit your medical question and receive an answer from a specialized doctor</p>
+                    <a href="/Customer/CuraHub/Q&A/Question/Create" class="btn btn-primary">Ask now</a>
+                </div>
+                <div class="col-2">
+                    <img style="width:50%" class="round-circle" src="~/Files/Images/Q&A.jpg" />
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card text-center mt-5 m-auto" style="width:95%">
+        <div class="card-header">
+            <h2><i class="bi bi-capsule"></i> Pharmacy</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-10">
+                    <h5 class="card-title">Get your medicine and your Pharmacy needs </h5>
+                    <p class="card-text">with delivery to your location</p>
+                    <a href="/Customer/CuraHub/Pharmacy/Index" class="btn btn-primary">place order</a>
+                </div>
+                <div class="col-2">
+                    <img style="width:50%" class="round-circle" src="~/Files/Images/medicine-icon.png" />
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card text-center mt-5 m-auto" style="width:95%">
+        <div class="card-header">
+            <h2><i class="bi bi-prescription2"></i> Book an appointment with medical analysis Lab</h2>
+
+
+        </div>
+        <div class="card-body" style="height:150px">
+            <div class="row">
+                <div class="col-10">
+                    <div class="rounded-2 bg-white">
+                        <form>
+                            <br />
+
+                            <div class="row">
+                                <div class="col-4 ms-2">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="query" id="SearchInput" placeholder="Search By Medical Analysis Lab Name">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <select class="form-select" id="mySelect" aria-label="Default select example">
+                                        <option selected>Select State</option>
+                                        <option value="Alexandria">Alexandria</option>
+                                        <option value="Aswan">Aswan</option>
+                                        <option value="Asyut">Asyut</option>
+                                        <option value="Beheira">Beheira</option>
+                                        <option value="Beni Suef">Beni Suef</option>
+                                        <option value="Cairo">Cairo</option>
+                                        <option value="Dakahlia">Dakahlia</option>
+                                        <option value="Damietta">Damietta</option>
+                                        <option value="Faiyum">Faiyum</option>
+                                        <option value="Gharbia">Gharbia</option>
+                                        <option value="Giza">Giza</option>
+                                        <option value="Ismailia">Ismailia</option>
+                                        <option value="Kafr el-Sheikh">Kafr el-Sheikh</option>
+                                        <option value="Luxor">Luxor</option>
+                                        <option value="Matrouh">Matrouh</option>
+                                        <option value="Minya">Minya</option>
+                                        <option value="Monufia">Monufia</option>
+                                        <option value="New Valley">New Valley</option>
+                                        <option value="North Sinai">North Sinai</option>
+                                        <option value="Port Said">Port Said</option>
+                                        <option value="Qalyubia">Qalyubia</option>
+                                        <option value="Qena">Qena</option>
+                                        <option value="Red Sea">Red Sea</option>
+                                        <option value="Sohag">Sohag</option>
+                                        <option value="South Sinai">South Sinai</option>
+                                        <option value="Suez">Suez</option>
+                                        <option value="Sharqia">Sharqia</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-3">
+                                    <select class="form-select" id="regionSelect" aria-label="Default select example">
+                                        <option selected>Select Region</option>
+
+                                    </select>
+
+                                </div>
+                                <div class="col-1">
+                                    <button type="submit" class="btn btn-primary mt-0">Search</button>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="col-2">
+                    <img style="width:50%" class="round-circle" src="~/Files/Images/analytical-testing-laboratory-research-test-512.webp" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+        var cities = @Html.Raw(Json.Serialize(cities));
+
+    $(document).ready(function () {
+      $('#mySelect').change(function () {
+        var selectedState = $(this).val();
+        var regionSelect = $('#regionSelect');
+
+        // Clear previous options
+        regionSelect.empty();
+
+        if (selectedState) {
+          var availableCities = cities[selectedState];
+            regionSelect.append('<option value="@null" selected>Select Region</option>');
+            regionSelect.append('<option value="@null" >All Region</option>');
+          if (availableCities) {
+            for (var i = 0; i < availableCities.length; i++) {
+              regionSelect.append('<option value="' + availableCities[i] + '">' + availableCities[i] + '</option>');
+            }
+          }
+        }
+      });
+    });
+</script>
+
+<script>
+    const images = [
+             "/Files/Images/Dentist.jpeg",
+             "/Files/Images/group-doctors.avif",
+              "/Files/Images/a-radiologist.png"
+         ];
+
+         let index = 0;
+         const section = document.querySelector(".mainSection");
+
+         function changeBackground() {
+             section.style.background = `url(${images[index]}) no-repeat center center/cover`;
+             index = (index + 1) % images.length;
+         }
+
+         setInterval(changeBackground, 4000);
+
+         changeBackground();
+</script>
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}
+

@@ -1,0 +1,180 @@
+﻿@using CMS.Models.CuraHub.IdentitySection
+@using Microsoft.AspNetCore.Identity
+@using CMS.Data.Access.Layer.Repository.IRepository
+
+@inject UserManager<ApplicationUser> _userManager
+@inject IUnitOfWork _unitOfWork
+
+@{
+    var user = await _userManager.GetUserAsync(User);
+    Doctor? doctor = null;
+    if (user != null)
+    {
+        doctor = _unitOfWork.DoctorRepository.RetriveItem(filter: e => e.ApplicationUserId == user.Id);
+
+    }
+}
+<nav class="navbar navbar-expand-lg  z-3 w-100" style="background-color:#0070cd" data-bs-theme="dark">
+    @* #006d77 *@
+    <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="~/Files/Images/Logo.webp" alt="Logo" width="50px" style="margin-left: 70px" class="d-inline-block align-text-top rounded-circle">
+        </a>
+        <!-- Navbar Brand -->
+        <a class="navbar-brand" href="/Customer/Home/Index">CuraHub</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link " href="/Customer/Home/Index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Customer/Home/Index">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Customer/Home/AboutUs">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Customer/Home/Contact">Contact</a>
+                </li>
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Admin/CuraHub/Pharmacy/Medicine/Index">Dashboard</a>
+                    </li>
+                    @* <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">management System</a>
+                        <div class="dropdown-menu">
+                            <div class="container">
+                                <div class="row" style="width:700px">
+                                    <div class="col-md-2">
+                                        <h6 class="dropdown-header">Identity</h6>
+
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Identity/User/Index">Users</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Identity/Role/Index">Roles</a>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="dropdown-header">Clinic</h6>
+
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Clinic/Doctor/Index">Doctors</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Clinic/ClinicReceptionist/Index">Clinic Receptionists</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Clinic/Patient/Index">Patients</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Clinic/PatientAppointment/Index"> Patients Appointments</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Clinic/Specialization/Index">Specializations</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Clinic/Qualification/Index">Qualifications</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Clinic/RequestDoctor/Index">Request Doctors</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Clinic/RequestClinicReceptionist/Index">Request Clinic Receptionists</a>
+
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6 class="dropdown-header">Pharmacy</h6>
+
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Pharmacy/Medicine/Index">Medicines</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Pharmacy/PharmacyCategory/Index">Categories</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Pharmacy/MedicineManufactory/Index">Manufactories</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Pharmacy/Pharmacist/Index">Pharmacists</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Pharmacy/PharmacyOrder/Index">Orders</a>
+                                        <a class="dropdown-item" href="/Admin/CuraHub/Pharmacy/PharmacyDeliveryRepresentative/Index">Delivery Representatives</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li> *@
+                }
+                
+            </ul>
+
+            <ul class="navbar-nav">
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+
+
+                    <div class="d-flex align-items-center ms-auto">
+
+                        <div class="me-3">
+                            <a href="/Customer/CuraHub/Pharmacy/PharmacyCart/index">
+                                <i class="fa-solid fa-cart-shopping" style="font-size:24px; color:white;"></i>
+                                @* <span class='badge badge-warning' id='#cart-count-nav'>0</span> *@
+                            </a>
+                        </div>
+                       
+                        <!-- Profile Picture and Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle p-0 m-0 d-flex align-items-center" style="background-color:#0070cd" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="0,10">
+                                <img src="~/Files/Images/profiles/@user?.ProfilePicture" alt="Image" width="30" height="30" class="rounded-circle me-2">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end " style="width:250px">
+
+                                <li class="nav-item">
+
+                                    <a class="dropdown-item" asp-area="Identity" asp-controller="Account" asp-action="Profile">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <img src="~/Files/Images/profiles/@user?.ProfilePicture" alt="Image" width="30" height="30" class="rounded-circle me-2">
+
+                                            </div>
+                                            <div class="col-8">
+                                                @user?.FirstName @user?.LastName
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" style="text-decoration:none; color:white;" href="/Customer/CuraHub/Clinic/PatientAppointment/UserAppoitments?AppicationUserId=@user.Id">
+                                        <div class="row">
+                                            <div class="col-4"></div>
+                                            <div class="col-8">My Appointments</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" style="text-decoration:none; color:white;" href="/Customer/CuraHub/Q&A/Question/Index">
+                                        <div class="row">
+                                            <div class="col-4"></div>
+                                            <div class="col-8">My Q & A</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="Customer" asp-controller="Pharmacy" asp-action="UserOrders">
+                                        <div class="row">
+                                            <div class="col-4"></div>
+                                            <div class="col-8">My Orders</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="Identity" asp-controller="Account" asp-action="Logout">
+                                        <div class="row">
+                                            <div class="col-4"></div>
+                                            <div class="col-8">Sign Out</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link " asp-area="Identity" asp-controller="Account" asp-action="Login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " asp-area="Identity" asp-controller="Account" asp-action="Register">Register</a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</nav>
+

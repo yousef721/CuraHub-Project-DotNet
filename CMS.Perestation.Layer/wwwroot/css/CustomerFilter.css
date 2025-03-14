@@ -1,0 +1,47 @@
+﻿
+/* Sidebar (Filter Section) */
+.filter-section {
+    width: 250px;
+    height: 79vh; /* Full height */
+    position: sticky; /* Make it fixed */
+    top: 2%;
+    left: 2%;
+        background-color: #fff;
+        background-image: url("~/Files/Images/doctor2.png");
+/*    background-image: url('/Files/Images/filter.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;*/
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Scrollable if content exceeds height */
+}
+
+.rating {
+    display: inline-block;
+}
+
+.star {
+    color: gray; /* لون النجوم الافتراضي */
+    font-size: 20px;
+}
+
+    .star.active {
+        color: gold; /* لون النجوم عند التحديد */
+    }
+
+    .filter-section h3 {
+        margin-bottom: 15px;
+    }
+
+    .filter-section label {
+        display: block;
+        margin: 10px 0;
+    }
+
+/* Main Content (Products) */
+.main-content {
+    margin-left: 270px; /* Space for the filter section */
+    padding: 20px;
+    width: calc(100% - 270px); /* Adjust width based on the filter section */
+}

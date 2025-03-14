@@ -1,0 +1,30 @@
+﻿@model CMS.Models.CuraHub.PharmacySection.PharmacySectionVM.MedicineManufactoryVM
+
+@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<h1 class="m-3 fw-bold">Edit Manufactory</h1>
+<div class="card shadow p-4 rounded">
+    <form asp-action="Edit" method="post" class="needs-validation" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" name="pageNumber" value="@ViewBag.currentPage"/>
+        
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" required />
+                <div class="invalid-feedback">
+                    <span asp-validation-for="Name"></span>
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary mt-3">Save</button>
+        <a asp-action="Index" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-secondary mt-3">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

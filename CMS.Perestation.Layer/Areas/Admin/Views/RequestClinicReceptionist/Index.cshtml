@@ -1,0 +1,122 @@
+﻿@using CMS.Models.CuraHub.ClinicSection.ClinicSectionVM.RequestClinicReceptionistSectionVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+<style>
+
+    body {
+        background-color: #e2e6ea;
+        background-image: none;
+    }
+
+    h1 {
+        color: black;
+    }
+
+</style>
+
+@model Admin_RequestClinicReceptionistsVM
+
+
+<br />
+
+
+<div class="bg-white min-vh-100 p-3 rounded-5 mt-3">
+<div class="rounded-2 bg-white pb-2 mt-3">
+    <form>
+        <br />
+
+        <div class="row">
+            <div class="row">
+                <div class="col-3 ms-2">
+                    <div class="mb-3">
+                            <input type="text" class="form-control" name="query" id="SearchInput" placeholder="Search By Receptionist Name">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <select class="form-select" name="DoctorId" aria-label="Default select example">
+                        <option selected>Select Doctor</option>
+                        @foreach (var doctor in Model.Doctors)
+                        {
+                            <option value="@doctor.Id">@doctor.FirstName @doctor.LastName</option>
+                        }
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="col-2">
+                    <button type="submit" class="btn btn-primary mt-0">Search</button>
+
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<br />
+
+<table class="table" style="border:solid">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col" style="text-align:center">ID</th>
+            <th scope="col" style="text-align:center">Name</th>
+            <th scope="col" style="text-align:center">Phone</th>
+            <th scope="col" style="text-align:center">Email</th>
+            <th scope="col" style="text-align:center">ProfilePicture</th>
+            <th scope="col" style="text-align:center">More Details</th>
+            <th scope="col" style="text-align:center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RequestClinicReceptionists)
+        {
+            <tr style="border:solid">
+                <th scope="row" style="border:solid">@item.Id</th>
+                <th scope="row" style="border:solid">@item.FirstName @item.LastName</th>
+                <th scope="row" style="border:solid">@item.Phone</th>
+                <th scope="row" style="border:solid">@item.Email</th>
+                <th scope="row" style="border:solid;text-align:center"> <img src="~/Files/Images/ClinicReceptionistPictures/@item.ProfilePicture" style="width:50px" class="rounded-circle" alt="Alternate Text" /> </th>
+                <th scope="row" style="border:solid;text-align:center"><a class="dropdown-item" href="/Admin/CuraHub/Clinic/RequestClinicReceptionist/Details?RequestClinicReceptionistId=@item.Id">Details</a></th>
+                <td>
+                    <a href="/Admin/CuraHub/Clinic/RequestClinicReceptionist/Accept?RequestClinicReceptionistId=@item.Id" class="btn btn-warning" id="@item.Id">pending</a>
+                    <script>
+                        document.getElementById(@item.Id).addEventListener('click', function () {
+                            this.style.backgroundColor = 'green';
+                            this.style.color = 'yellow';
+                            this.textContent = 'accept';
+                            this.disabled = true;
+                        });
+                    </script>
+                    <a href="/Admin/CuraHub/Clinic/RequestClinicReceptionist/Reject?RequestClinicReceptionistId=@item.Id" class="btn btn-danger">reject</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex flex-row-reverse">
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            @for (int i = 1; i <= (Model.TotalRequestClinicReceptionistCount + 4) / 5; i++)
+            {
+
+                <li class="page-item"><a class="page-link " href="/Admin/CuraHub/Clinic/RequestClinicReceptionist/Index?PageNumber=@i">@i</a></li>
+
+            }
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+
+
+</div>
+
+</div>
+

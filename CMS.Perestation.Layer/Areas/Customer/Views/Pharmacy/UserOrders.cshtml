@@ -1,0 +1,76 @@
+﻿@using CMS.Models.CuraHub.PharmacySection
+@model List<PharmacyCustomer>
+
+@{
+    ViewData["Title"] = "Customer List";
+    Layout = "~/Views/Shared/_PharmacyLayout.cshtml";
+}
+<h1 class="title m-3 fw-bold">Your Orders</h1>
+<div id="Content" class="bg-white shadow-sm mb-3 p-2 rounded">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover mb-0" id="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FirstName @item.LastName</td>
+                        <td>@item.Email</td>
+                        <td>@item.Phone</td>
+                        <td class="text-center">
+                            <a asp-action="OrderDetails" asp-route-customerId="@item.Id" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-primary">
+                                <i class="fas fa-info-circle"></i> View Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_PaginationPartial" model="ViewBag.LastPage"/>
+
+@section Scripts {
+    <script src="~/js/pagination.js"></script>
+}
+    @* <h2 class="text-center mb-4">Customer List</h2>
+
+    <table class="table table-bordered table-hover shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>State</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model)
+            {
+                <tr>
+                    <td>@customer.Id</td>
+                    <td>@customer.FirstName</td>
+                    <td>@customer.LastName</td>
+                    <td>@customer.Email</td>
+                    <td>@customer.Phone</td>
+                    <td>@customer.State</td>
+                    <td>
+                        <a href="/Customer/CuraHub/Pharmacy/OrderDetails?customerId=@customer.Id" class="btn btn-primary btn-sm">
+                            View Details
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table> *@

@@ -1,0 +1,303 @@
+﻿@using CMS.Data.Access.Layer.Repository.IRepository
+@using CMS.Models.CuraHub.ClinicSection.ClinicSectionVM
+@using CMS.Utitlities.StaticData
+@inject IUnitOfWork _unitOfWork
+@{
+    var specializations = _unitOfWork.SpecializationRepository.Retrive();
+    List<string> titles = ["Professor", "Lecturer", "Consultant", "Specialist"];
+
+   
+    // ... Add other states and cities
+    var cities = City.cities;
+
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model List<DoctorVM>
+<style>
+
+    body {
+        background-color: #e2e6ea;
+        background-image: none;
+    }
+    h1{
+        color: black;
+    }
+
+</style>
+
+
+<br />
+<br />
+<br />
+<div class="bg-white p-2 min-vh-100">
+<div class="row">
+        <div class="col-10">
+            <h1>All Doctors</h1>
+        </div>
+        <div class="col-2">
+            <a href="/Admin/CuraHub/Clinic/Doctor/CreateEdit" class="btn btn-secondary"><i class="bi bi-plus-circle"></i> Add New Doctor</a>
+        </div>
+    </div>
+<br />
+<div class="rounded-2 bg-white pb-2">
+    <form>
+        <br />
+
+        <div class="row">
+           <div class="row">
+                <div class="col-3 ms-2">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="query" id="SearchInput" placeholder="Search By Doctor Name">
+                    </div>
+                </div>
+                <div class="col-3">
+                    <select class="form-select" name="SpecializationId" aria-label="Default select example">
+                        <option selected>Select speciality</option>
+                        @foreach (var specialization in specializations)
+                        {
+                            <option value="@specialization.Id">@specialization.Name</option>
+                        }
+                        
+                    </select>
+
+                </div>
+
+                <div class="col-3">
+                    <select class="form-select" id="mySelect" name="State" aria-label="Default select example">
+                        <option value="@null" selected>Select State</option>
+                        <option value="Alexandria">Alexandria</option>
+                        <option value="Aswan">Aswan</option>
+                        <option value="Asyut">Asyut</option>
+                        <option value="Beheira">Beheira</option>
+                        <option value="Beni Suef">Beni Suef</option>
+                        <option value="Cairo">Cairo</option>
+                        <option value="Dakahlia">Dakahlia</option>
+                        <option value="Damietta">Damietta</option>
+                        <option value="Faiyum">Faiyum</option>
+                        <option value="Gharbia">Gharbia</option>
+                        <option value="Giza">Giza</option>
+                        <option value="Ismailia">Ismailia</option>
+                        <option value="Kafr el-Sheikh">Kafr el-Sheikh</option>
+                        <option value="Luxor">Luxor</option>
+                        <option value="Matrouh">Matrouh</option>
+                        <option value="Minya">Minya</option>
+                        <option value="Monufia">Monufia</option>
+                        <option value="New Valley">New Valley</option>
+                        <option value="North Sinai">North Sinai</option>
+                        <option value="Port Said">Port Said</option>
+                        <option value="Qalyubia">Qalyubia</option>
+                        <option value="Qena">Qena</option>
+                        <option value="Red Sea">Red Sea</option>
+                        <option value="Sohag">Sohag</option>
+                        <option value="South Sinai">South Sinai</option>
+                        <option value="Suez">Suez</option>
+                        <option value="Sharqia">Sharqia</option>
+                    </select>
+
+                </div>
+                <div class="col-2">
+                    <select class="form-select" name="City" id="regionSelect" aria-label="Default select example">
+                        <option value="@null" selected>Select Region</option>
+
+                    </select>
+
+                </div>
+         
+                 
+           </div>
+           <div class="row">
+                <div class="col-3 ms-2" >
+
+                    <select class="form-select" name="Title" aria-label="Default select example">
+                        <option value="@null" selected>Title</option>
+                        @foreach (var title in titles)
+                        {
+                            <option value="@title">@title</option>                           
+                        }
+
+                    </select>
+                </div>
+                <div class="col-3">
+
+                    <select class="form-select" name="ConsultationFees" aria-label="Default select example">
+                        <option value="@null" selected>Consultation Fees</option>
+                        <option value="100">less Than 100 EGP</option>
+                        <option value="200">From 100 EGP to 200 EGP</option>
+                        <option value="300">From 200 EGP to 300 EGP</option>
+                        <option value="400">From 300 EGP to 400 EGP</option>
+                        <option value="401">More Than 400 EGP</option>
+
+                    </select>
+
+                </div>
+                <div class="col-3">
+                    <select class="form-select" name="Rate" aria-label="Default select example">
+                        <option value="@null" selected>Rate</option>
+                        <option value="1">less Than 1</option>
+                        <option value="2">From 1 to 2</option>
+                        <option value="3">From 2 to 3</option>
+                        <option value="4">From 3 to 4</option>
+                        <option value="5">From 4 to 5</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-2">
+                    <button type="submit" class="btn btn-primary mt-0">Search</button>
+
+                </div>
+           </div>
+
+           
+        </div>
+    </form>
+</div>
+<br />
+
+<table class="table" style="border:solid">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col" style="text-align:center">ID</th>
+                <th scope="col" style="text-align:center">Title</th>
+                <th scope="col" style="text-align:center">Name</th>
+                <th scope="col" style="text-align:center">Phone</th>
+                <th scope="col" style="text-align:center">Email</th>
+                <th scope="col" style="text-align:center">ProfilePicture</th>
+                <th scope="col" style="text-align:center">Schedule</th>
+                <th scope="col" style="text-align:center">Specialization</th>
+
+                <th scope="col" style="text-align:center">More Details</th>
+                <th scope="col" style="text-align:center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="border:solid">
+                    <th scope="row" style="border:solid">@item.Id</th>
+                    <th scope="row" style="border:solid">@item.Title</th>
+                    <th scope="row" style="border:solid">@item.FirstName @item.LastName</th>
+                    <th scope="row" style="border:solid">@item.Phone</th>
+                    <th scope="row" style="border:solid">@item.Email</th>
+                    <th scope="row" style="border:solid;text-align:center"> <img src="~/Files/Images/DoctorsPictures/@item.ProfilePicture" style="width:50px" class="rounded-circle" alt="Alternate Text" /> </th>
+                    <th scope="row" style="border:solid;text-align:center"><a class="dropdown-item" href="/Admin/CuraHub/Clinic/Schedule/ShowDoctorSchedule?DoctorId=@item.Id">Schedule</a></th>
+                    <th scope="row" style="border:solid;text-align:center">@item.Specialization.Name</th>
+                    <th scope="row" style="border:solid;text-align:center"><a class="dropdown-item" href="/Admin/CuraHub/Clinic/Doctor/Details?DoctorId=@item.Id">Details</a></th>
+                    <td style="border:solid">
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                            <button type="button" class="btn btn-primary  mt-0">Action</button>
+                        <div class="btn-group" role="group">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle  mt-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <a class="dropdown-item" href="/Admin/CuraHub/Clinic/Doctor/CreateEdit?DoctorId=@item.Id"><i class="bi bi-pencil-square"></i>Edit</a>
+                                <a class="dropdown-item delete-btn"
+                                   data-Doctor-id="@item.Id"
+                                   data-Doctor-name="@item.FirstName" + "@item.LastName"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#deleteModal">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+<div class="d-flex flex-row-reverse">
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            @for (int i = 1; i <= ((int)TempData["DoctorIndexTotalCount"]+4)/5; i++)
+                {
+
+                <li class="page-item"><a class="page-link " href="/Admin/CuraHub/Clinic/Doctor/Index?PageNumber=@i">@i</a></li>
+
+                }
+                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+
+
+    </div>
+
+
+</div>
+
+<script>
+        var cities = @Html.Raw(Json.Serialize(cities));
+
+    $(document).ready(function () {
+      $('#mySelect').change(function () {
+        var selectedState = $(this).val();
+        var regionSelect = $('#regionSelect');
+
+        // Clear previous options
+        regionSelect.empty();
+
+        if (selectedState) {
+          var availableCities = cities[selectedState];
+            regionSelect.append('<option value="@null" selected>Select Region</option>');
+            regionSelect.append('<option value="@null" >All Region</option>');
+          if (availableCities) {
+            for (var i = 0; i < availableCities.length; i++) {
+              regionSelect.append('<option value="' + availableCities[i] + '">' + availableCities[i] + '</option>');
+            }
+          } 
+        }
+      });
+    });
+</script>
+
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the Doctor <strong id="modalDoctorName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Attach event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const DoctorId = this.getAttribute('data-Doctor-id');
+            const DoctorName = this.getAttribute('data-Doctor-name');
+
+            // Set the category name in the modal
+            document.getElementById('modalDoctorName').textContent = DoctorName;
+
+            // Update the delete link to include the categoryId
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            confirmDeleteBtn.href = `/Admin/CuraHub/Clinic/Doctor/Delete?DoctorId=${DoctorId}`;
+        });
+    });
+</script>
+
+
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}

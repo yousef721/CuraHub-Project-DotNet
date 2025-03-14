@@ -1,0 +1,89 @@
+﻿@using CMS.Models.CuraHub.QuestionAndAnswerSection.QuestionsAndAnswersVM
+
+@{
+    ViewData["Title"] = "DoctorAnswers";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+
+<style>
+
+    body {
+        background-color: #e2e6ea;
+        background-image: none;
+    }
+
+    h1 {
+        color: black;
+    }
+
+</style>
+
+
+@model Cust_QuestionAndAnswerVM
+
+<div class="bg-white min-vh-100 mt-2 rounded-5">
+
+    <h1>
+        <img src="~/Files/Images/فلسطين.svg" class="rounded-circle " style="width: 50px;" />
+    </h1>
+
+    @foreach (var item in Model.Questions)
+    {
+        <br />
+        <div class="border border-3 m-auto mt-3 w-75">
+
+            <div style="width:90%; margin:auto;">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="SenderEmail" class="form-label text-black text-start">Date</label>
+                            <input type="text" disabled class="form-control" value="@item.Date">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="SenderEmail" class="form-label text-black text-start">Specialization</label>
+                            <input disabled type="text" class="form-control" value="@item?.Specialization?.Name">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mb-3">
+                    <label for="SenderEmail" class="form-label text-black text-start">Question</label>
+                    <input type="text" disabled class="form-control" id="SenderEmail" name="SenderEmail" value="@item?.Question">
+                </div>
+                <div class="mb-3">
+                    <label for="answer" class="form-label text-black text-start">Answer</label>
+                    <textarea disabled class="form-control" id="answer" rows="5"> @item?.Answer </textarea>
+                </div>
+                <div class="mb-3">
+                    @* @if(item.DoctorId !=0) *@
+
+                    <div class="row">
+                        <div class="col-9">
+                            <p class="text-black text-start"> Question is answered by Dr / @item?.Doctor?.FirstName @item?.Doctor?.LastName</p>
+                        </div>
+                        <div class="col-3">
+                            @if (item?.Status == true)
+                            {
+                                <button disabled class="btn btn-success">Answered</button>
+                            }
+                            else
+                            {
+                                <button disabled class="btn btn-warning">Not Answered</button>
+
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    }
+
+
+
+</div>
+

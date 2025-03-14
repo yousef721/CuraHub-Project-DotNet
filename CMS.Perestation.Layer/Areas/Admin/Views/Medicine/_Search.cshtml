@@ -1,0 +1,24 @@
+﻿@using CMS.Models.CuraHub.PharmacySection.PharmacySectionVM
+@model List<MedicineVM>
+    
+@foreach (var medicine in Model)
+{
+    <tr>
+        <td>@medicine.Name</td>
+        <td>@medicine.Price EGP</td>
+        <td>@medicine.Quantity</td>
+        <td>@medicine.PharmacyCategory?.Name</td>
+        <td>@medicine.MedicineManufactory?.Name</td>
+        <td class="text-center">
+            <a asp-action="Edit" asp-route-id="@medicine.Id" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a asp-action="Details" asp-route-id="@medicine.Id" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-info">
+                <i class="fas fa-info-circle"></i> Details
+            </a>
+            <a class="btn btn-danger delete" data-id="@medicine.Id" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <i class="fas fa-trash"></i> Delete
+            </a>
+        </td>
+    </tr>
+}

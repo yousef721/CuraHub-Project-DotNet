@@ -1,0 +1,224 @@
+﻿@using CMS.Models.CuraHub.ClinicSection.ClinicSectionVM.ForCustomerSection.DoctorVMSection
+@model Cust_DoctorsVM
+
+<div class="main-content w-100 ms-0 me-0" id="main-content">
+    <!-- Doctor Cards -->
+    @foreach (var item in Model.Doctors)
+    {
+        <div class="card mb-3 ms-0 me-0 p-3" style="width:100%;">
+            <div class="row g-0">
+                <div class="col-md-2">
+                    <img src="~/Files/Images/DoctorsPictures/@item.ProfilePicture" class="m-2 img-fluid rounded-circle" style="width:170px" alt="product image">
+                </div>
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="card-body text-start ">
+                                <h5 class="card-title" style="color:#0070cd;">Dr/ @item.FirstName @item.LastName</h5>
+                                @if ((int)item.Rate == 1)
+                                {
+                                    <div class="rating">
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star ">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                    </div>
+
+                                }
+                                else if ((int)item.Rate == 2)
+                                {
+                                    <div class="rating">
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                    </div>
+
+                                }
+                                else if ((int)item.Rate == 3)
+                                {
+                                    <div class="rating">
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                    </div>
+
+                                }
+                                else if ((int)item.Rate == 4)
+                                {
+                                    <div class="rating">
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star">&#9733;</span>
+                                    </div>
+
+                                }
+                                else if ((int)item.Rate == 5)
+                                {
+                                    <div class="rating">
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star active">&#9733;</span>
+                                        <span class="star active">&#9733;</span>
+                                    </div>
+
+                                }
+                                <p class="card-text">
+                                    <i class="bi bi-earphones" style="color: #0070cd; font-size: 24px;"></i>
+                                    <span style="color:#0070cd">@item.Title</span> Specialized in <span style="color:#0070cd">@item.Specialization.Name</span>
+                                </p>
+                                <p> <i class="bi bi-geo-alt-fill"></i> Addrees: @item.City -@item.Street</p>
+                                <p> <i class="bi bi-currency-exchange"></i> Fees: @item.ConsultationFees EGP</p>
+                                <p class="card-text"><i class="bi bi-telephone"></i> @item.Phone</p>
+
+                                <div>
+                                    <a class="btn btn-primary" href="/Customer/CuraHub/Clinic/Doctor/Details?DoctorId=@item.Id">More Details ...</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-7">
+                            <div class="row ">
+                                <div class="col-1"></div>
+                                <!-- اليوم -->
+                                <div class="col-3  border rounded-3 border-black m-0 p-0 me-2">
+                                    <form id="bookingFormToday" class="m-0 p-0" action="/Customer/CuraHub/Clinic/Patient/Upsert">
+                                        <div class="row text-bg-primary p-0 m-0 pt-1  border-bottom rounded-top-3 border-bottom-1 border-black">
+                                            <h6 style="font-size:initial">Today</h6>
+                                        </div>
+                                        <div class="row">
+                                            <div style="height:28vh; overflow:auto">
+                                                <input type="hidden" name="dayIndex" value="1" />
+                                                <input type="hidden" name="date" value="@DateOnly.FromDateTime(DateTime.Now)" />
+                                                <input type="hidden" id="selectedAppointmentToday" name="ScheduleId" />
+                                                @foreach (var schedule in Model.Schedules.Where(e => e.DoctorId == item.Id && e.Day == DateTime.Now.DayOfWeek))
+                                                {
+                                                    @if (schedule.Available)
+                                                    {
+                                                        <div class="options">
+                                                            <div class="option" data-schedule-id="@schedule.Id" data-form-id="bookingFormToday">
+                                                                @schedule.Appointment
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="options">
+                                                            <div class="option" data-schedule-id="@schedule.Id" data-form-id="bookingFormToday">
+                                                                <s>@schedule.Appointment</s>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+
+                                        </div>
+                                        <div class="row  text-bg-danger border-top border-top-1 rounded-bottom-3 border-black p-0 m-0 pt-1">
+                                            <button type="submit" class="btn btn-danger rounded-bottom-3 p-0 m-0 h-100 w-100">BOOK</button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <!-- غدًا -->
+                                <div class="col-3  border rounded-3 border-black m-0 p-0 me-2">
+                                    <form id="bookingFormTomorrow" action="/Customer/CuraHub/Clinic/Patient/Upsert">
+                                        <div class="row text-bg-primary p-0 m-0 pt-1  border-bottom rounded-top-3 border-bottom-1 border-black">
+                                            <h6 style="font-size:initial">Tomorrow</h6>
+                                        </div>
+                                        <div class="row">
+                                            <div style="height:28vh; overflow:auto">
+                                                <input type="hidden" name="dayIndex" value="2" />
+
+                                                <input type="hidden" name="date" value="@DateOnly.FromDateTime(DateTime.Now.AddDays(1))" />
+                                                <input type="hidden" id="selectedAppointmentTomorrow" name="ScheduleId" />
+                                                @foreach (var schedule in Model.Schedules.Where(e => e.DoctorId == item.Id && e.Day == DateTime.Now.AddDays(1).DayOfWeek))
+                                                {
+                                                    @if (schedule.Available)
+                                                    {
+                                                        <div class="options">
+                                                            <div class="option" data-schedule-id="@schedule.Id" data-form-id="bookingFormTomorrow">
+                                                                @schedule.Appointment
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="options">
+                                                            <div class="option" data-schedule-id="@schedule.Id" data-form-id="bookingFormTomorrow">
+                                                                <s>@schedule.Appointment</s>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+
+                                        </div>
+                                        <div class="row  text-bg-danger border-top border-top-1 rounded-bottom-3 border-black p-0 m-0 pt-1">
+                                            <button type="submit" class="btn btn-danger rounded-bottom-3 p-0 m-0 h-100 w-100">BOOK</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- بعد غد -->
+                                <div class="col-3  border rounded-3 border-black m-0 p-0">
+                                    <form id="bookingFormDayAfterTomorrow" action="/Customer/CuraHub/Clinic/Patient/Upsert">
+
+                                        <div class="row text-bg-primary p-0 m-0 pt-1  border-bottom rounded-top-3 border-bottom-1 border-black">
+                                            <h6 style="font-size:initial">@DateTime.Now.AddDays(2).Day / @DateTime.Now.AddDays(2).Month</h6>
+                                        </div>
+                                        <div class="row">
+                                            <div style="height:28vh; overflow:auto">
+                                                <input type="hidden" name="dayIndex" value="3" />
+                                                <input type="hidden" name="date" value="@DateOnly.FromDateTime(DateTime.Now.AddDays(2))" />
+                                                <input type="hidden" id="selectedAppointmentDayAfterTomorrow" name="ScheduleId" />
+                                                @foreach (var schedule in Model.Schedules.Where(e => e.DoctorId == item.Id && e.Day == DateTime.Now.AddDays(2).DayOfWeek))
+                                                {
+                                                    @if (schedule.Available)
+                                                    {
+                                                        <div class="options">
+                                                            <div class="option" data-schedule-id="@schedule.Id" data-form-id="bookingFormDayAfterTomorrow">
+                                                                @schedule.Appointment
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="options">
+                                                            <div class="option" data-schedule-id="@schedule.Id" data-form-id="bookingFormDayAfterTomorrow">
+                                                                <s>@schedule.Appointment</s>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+
+                                        </div>
+                                        <div class="row  text-bg-danger border-top border-top-1 rounded-bottom-3 border-black p-0 m-0 pt-1">
+                                            <button type="submit" class="btn btn-danger rounded-bottom-3 p-0 m-0 h-100 w-100">BOOK</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+
+
+</div>

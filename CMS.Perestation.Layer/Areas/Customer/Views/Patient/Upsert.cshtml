@@ -1,0 +1,311 @@
+﻿@using CMS.Data.Access.Layer.Repository.IRepository
+@using CMS.Models.CuraHub.ClinicSection
+@using CMS.Models.CuraHub.ClinicSection.ClinicSectionVM.PatientVM
+@using CMS.Models.CuraHub.IdentitySection
+@using CMS.Utitlities.StaticData
+@using Microsoft.AspNetCore.Identity
+
+@{
+    ViewData["Title"] = "Upsert";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model PatientUpsartVM
+@inject UserManager<ApplicationUser> _userManager;
+@inject IUnitOfWork _unitOfWork;
+@{
+    var doctor = _unitOfWork.DoctorRepository.RetriveItem(e => e.Id == Model.DoctorId) as Doctor;
+    var user = _userManager.GetUserAsync(User).GetAwaiter().GetResult();
+    var cities = City.cities;
+}
+<br />
+<br />
+<br />
+
+<div class="bg-white bg-opacity-100 rounded-2 p-2">
+
+    <h1>
+        <img src="~/Files/Images/فلسطين.svg" class="rounded-circle " style="width: 50px;" />
+    </h1>
+    <h2 class="text-black">
+        Fill The Form
+    </h2>
+
+    <div asp-validation-summary="All"></div>
+    <div class="row">
+        <form action="/Customer/CuraHub/Clinic/Patient/Upsert" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="Id" value="@Model.Id"/>
+            <input type="hidden" name="date" value="@Model.patientAppointment.date" />
+            <input type="hidden" name="ScheduleId" value="@Model.patientAppointment.ScheduleId" />
+            <input type="hidden" name="ApplicationUserId" value="@Model.ApplicationUserId" />
+
+            <div class="row">
+                <div class="col-8">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="FirstName" class="form-label text-black  text-start d-block">First Name ( Required )</label>
+                                <input type="text" required="" class="form-control" value="@Model.FirstName" id="FirstName" name="FirstName" placeholder="First Name">
+                                <span class="text-danger" asp-validation-for="@Model.FirstName"></span>
+
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="LastName" class="form-label  text-black  text-start d-block">Last Name ( Required )</label>
+                                <input type="text" required="" class="form-control" value="@Model.LastName" id="LastName" name="LastName" placeholder="Last Name">
+                                <span class="text-danger" asp-validation-for="@Model.LastName"></span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="Email" class="form-label  text-black  text-start d-block">Email</label>
+                                <input type="email" required="" class="form-control" value="@Model.Email" id="Email" name="Email" placeholder="Email">
+                                <span class="text-danger" asp-validation-for="@Model.Email"></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="Phone" class="form-label  text-black  text-start d-block">Phone ( Optional )</label>
+                                <input type="text"  class="form-control" value="@Model.Phone" id="Phone" name="Phone" placeholder="Phone">
+                                <span class="text-danger" asp-validation-for="@Model.Phone"></span>
+
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="Doctor" class="form-label  text-black  text-start d-block">Doctor</label>
+                                <input type="hidden" class="form-control" value="@Model.DoctorId" id="DoctorId" name="DoctorId" placeholder="Doctor">
+                                <input type="text" disabled class="form-control" value="@doctor?.FirstName @doctor?.LastName" id="Doctor"  placeholder="Doctor">
+
+                                <span class="text-danger" asp-validation-for="@Model.DoctorId"></span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+
+                    <div class="mb-3">
+                        <img id="preview" src="~/Files/Images/PatientPictures/@Model.ProfilePicture" alt="Image Preview" style=" width:100%">
+                    </div>
+                    <span class="text-danger" asp-validation-for="@Model.ProfilePicture"></span>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label for="mySelect" class="form-label text-black">State  ( Optional )</label>
+                    <select class="form-select" name="State" id="mySelect" aria-label="Default select example">
+                        <option selected>Select State</option>
+                        <option value="Alexandria">Alexandria</option>
+                        <option value="Aswan">Aswan</option>
+                        <option value="Asyut">Asyut</option>
+                        <option value="Beheira">Beheira</option>
+                        <option value="Beni Suef">Beni Suef</option>
+                        <option value="Cairo">Cairo</option>
+                        <option value="Dakahlia">Dakahlia</option>
+                        <option value="Damietta">Damietta</option>
+                        <option value="Faiyum">Faiyum</option>
+                        <option value="Gharbia">Gharbia</option>
+                        <option value="Giza">Giza</option>
+                        <option value="Ismailia">Ismailia</option>
+                        <option value="Kafr el-Sheikh">Kafr el-Sheikh</option>
+                        <option value="Luxor">Luxor</option>
+                        <option value="Matrouh">Matrouh</option>
+                        <option value="Minya">Minya</option>
+                        <option value="Monufia">Monufia</option>
+                        <option value="New Valley">New Valley</option>
+                        <option value="North Sinai">North Sinai</option>
+                        <option value="Port Said">Port Said</option>
+                        <option value="Qalyubia">Qalyubia</option>
+                        <option value="Qena">Qena</option>
+                        <option value="Red Sea">Red Sea</option>
+                        <option value="Sohag">Sohag</option>
+                        <option value="South Sinai">South Sinai</option>
+                        <option value="Suez">Suez</option>
+                        <option value="Sharqia">Sharqia</option>
+                    </select>
+
+                </div>
+                <div class="col-3">
+                    <label for="regionSelect" class="form-label text-black">City</label>
+                    <select class="form-select" id="regionSelect" name="City" aria-label="Default select example">
+                        <option value="@null" selected>Select Region</option>
+
+                    </select>
+
+                </div>
+                <div class="col-3">
+                    <label for="Region" class="form-label text-black">Region</label>
+                    <input type="text"  class="form-control" value="@Model.Region" id="Region" name="Region" placeholder="Region">
+                    <span class="text-danger" asp-validation-for="@Model.Region"></span>
+
+
+
+                </div>
+                <div class="col-3">
+                    <label for="Street" class="form-label text-black">Street</label>
+                    <input type="text"  class="form-control" value="@Model.Street" id="Street" name="Street" placeholder="Street">
+                    <span class="text-danger" asp-validation-for="@Model.Street"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <label for="Gender" class="form-label text-black">Gender  </label>
+                    <select class="form-select" name="Gender" id="Gender" aria-label="Default select example">
+
+                        <option selected disabled>Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+
+                </div>
+                <div class="col-3">
+                    <label for="BloodType" class="form-label text-black">Blood Type  ( Optional )</label>
+                    <select class="form-select"  name="BloodType" id="BloodType" aria-label="Default select example">
+                        <option selected disabled>Select Blood Type</option>
+                        @foreach (var bloodType in BloodType.BloodTypes)
+                        {
+                            <option value="@bloodType">@bloodType</option>
+                        }
+
+                    </select>
+                    <span class="text-danger" asp-validation-for="@Model.BloodType"></span>
+
+                </div>
+                <div class="col-3">
+                    <label for="Marital Status" class="form-label text-black">Marital Status</label>
+                    <select class="form-select" required="" id="Marital Status" name="MaritalStatus" aria-label="Default select example">
+
+                        <option selected disabled>select Marital Status</option>
+
+                        @foreach (var maritalStatus in MaritalStatus.MaritalStatuss)
+                        {
+                            <option value="@maritalStatus">@maritalStatus</option>
+                        }
+
+                    </select>
+                    <span class="text-danger" asp-validation-for="@Model.MaritalStatus"></span>
+
+
+                </div>
+                <div class="col-3">
+                    <div class="mb-3">
+                        <label for="Occupation" class="form-label text-black  text-start d-block">Occupation ( Required )</label>
+                        <input type="text" class="form-control" value="@Model.Occupation" id="Occupation" name="Occupation" placeholder="Occupation">
+                        <span class="text-danger" asp-validation-for="@Model.Occupation"></span>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+
+
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="DateOfBirth"  class="form-label text-black  text-start d-block">Date Of Birth</label>
+                        <input type="date" class="form-control" value="@Model.DateOfBirth" id="DateOfBirth" name="DateOfBirth" placeholder="Date Of Birth">
+                        <span class="text-danger" asp-validation-for="@Model.DateOfBirth"></span>
+
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="PersonalNationalIDNumber" class="form-label text-black  text-start d-block">Personal National ID Number (Required )</label>
+                        <input type="text" required="" class="form-control" value="@Model.PersonalNationalIDNumber" id="PersonalNationalIDNumber" name="PersonalNationalIDNumber" placeholder="Personal National ID Number">
+                        <span class="text-danger" asp-validation-for="@Model.PersonalNationalIDNumber"></span>
+
+                    </div>
+                </div>
+                <div class="col-4">
+
+                    <div class="mb-3">
+                        <label for="MedicalAnalysisFile" class="form-label text-black">Medical Analysis ( Optional )</label>
+                        <input type="file" class="form-control" name="MedicalAnalysisFile" id="MedicalAnalysisFile" placeholder="Medical Analysis">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <br />
+            
+            <button type="submit" class="btn btn-primary ">Request</button>
+
+
+        </form>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"> </script>
+
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+
+}
+
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+<script>
+        var cities = @Html.Raw(Json.Serialize(cities));
+
+    $(document).ready(function () {
+      $('#mySelect').change(function () {
+        var selectedState = $(this).val();
+        var regionSelect = $('#regionSelect');
+
+        // Clear previous options
+        regionSelect.empty();
+
+        if (selectedState) {
+          var availableCities = cities[selectedState];
+            regionSelect.append('<option selected>Select Region</option>');
+            regionSelect.append('<option >All Region</option>');
+          if (availableCities) {
+            for (var i = 0; i < availableCities.length; i++) {
+              regionSelect.append('<option value="' + availableCities[i] + '">' + availableCities[i] + '</option>');
+            }
+          }
+        }
+      });
+    });
+</script>
+
+
+

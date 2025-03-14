@@ -1,0 +1,112 @@
+﻿@using CMS.Models.Enums
+@using CMS.Utitlities.StaticData
+@model CMS.Models.CuraHub.PharmacySection.PharmacySectionVM.CategoriesAndManufactoriesVM
+
+@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<h1 class="m-3 fw-bold">Create Medicine</h1>
+<div class="card shadow p-4 rounded">
+    <form asp-action="Create" class="needs-validation" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="MedicinesVM.Name" class="control-label"></label>
+                <input asp-for="MedicinesVM.Name" class="form-control" placeholder="Name"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="MedicinesVM.Name"></span>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="MedicinesVM.File" class="control-label">Upload Image</label>
+                <input asp-for="MedicinesVM.File" class="form-control" type="file" id="File" onchange="previewImage(event)" />
+                <div class="invalid-feedback">
+                    <span asp-validation-for="MedicinesVM.File"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 ">
+                <label asp-for="MedicinesVM.Price" class="control-label"></label>
+                <input asp-for="MedicinesVM.Price" class="form-control" type="number" placeholder="Price"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="MedicinesVM.Price"></span>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <label asp-for="MedicinesVM.Quantity" class="control-label"></label>
+                <input asp-for="MedicinesVM.Quantity" class="form-control" type="number" placeholder="Quantity"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="MedicinesVM.Quantity"></span>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="MedicinesVM.Status" class="control-label">Select Medicine Status</label>
+                <select class="form-control" asp-for="MedicinesVM.Status">
+                    <option value="">Select Medicine Status</option>
+                    @foreach (var item in MedicinesStatus.Status)
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="MedicinesVM.Status"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="MedicinesVM.MedicineManufactoryId" class="control-label">Select Manufactory</label>
+                <select class="form-control" asp-for="MedicinesVM.MedicineManufactoryId">
+                    <option value="">Select Manufactory</option>
+                    @foreach (var item in Model.MedicineManufactories)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="MedicinesVM.MedicineManufactoryId" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="MedicinesVM.PharmacyCategoryId" class="control-label">Select Category</label>
+                <select class="form-control" asp-for="MedicinesVM.PharmacyCategoryId">
+                    <option value="">Select Category</option>
+                    @foreach (var item in Model.PharmacyCategories)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="MedicinesVM.PharmacyCategoryId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="MedicinesVM.Description" class="control-label"></label>
+            <textarea asp-for="MedicinesVM.Description" class="form-control" placeholder="Description"></textarea>
+            <div class="invalid-feedback">
+                <span asp-validation-for="MedicinesVM.Description"></span>
+            </div>
+        </div>
+
+        <!-- Image Preview -->
+        <div id="imagePreview" class="mt-3 text-center" style="display: none;">
+            <img id="previewImg" class="img-thumbnail" style="width: 100px; height: 100px;" />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Create</button>
+        <a asp-action="Index" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-secondary mt-3">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function previewImage(event) {
+            var preview = document.getElementById("previewImg");
+            var previewContainer = document.getElementById("imagePreview");
+
+            preview.src = URL.createObjectURL(event.target.files[0]);
+            previewContainer.style.display = "block";
+        }
+    </script>
+}

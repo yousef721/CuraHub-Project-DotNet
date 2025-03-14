@@ -1,0 +1,219 @@
+﻿@using CMS.Models.CuraHub.PharmacySection
+@model List<Medicine>
+    
+@{
+    ViewData["Title"] = "Medicines Products";
+    Layout = "~/Views/Shared/_PharmacyLayout.cshtml";
+}
+<div class="position-relative">
+    <div class="input-group shadow-sm">
+        <span class="input-group-text bg-primary"><i class="fas fa-search text-white"></i></span>
+        <input type="text" class="form-control" id="searchInput" placeholder="Search for medicines..." autocomplete="off">
+    </div>
+
+    @* Search Dropdown Results *@
+    <ul id="searchResults" class="list-group position-absolute w-100 shadow bg-white z-3" 
+        style="overflow-y: auto; max-height: 300px; top: 100%; display: none; border-radius: 8px;">
+    </ul>
+</div>
+<h2 class="text-dark font-weight-bold mt-4">Medicines Products</h2>
+<div class="row" id="medicineContent">
+@foreach (var product in Model)
+{
+    <div class="col-md-3 mb-4">
+        <a href="/Customer/CuraHub/Pharmacy/Medicine/Details?medicineId=@product.Id" class="card h-100 shadow-sm text-decoration-none">
+            <img src="~/Files/Images/Medicines/@product.Img" class="card-img-top p-3" alt="@product.Name">
+            <div class="card-body text-center">
+                <h6 class="card-title fw-bold">@product.Name</h6>
+                @if (product.Quantity == 0)
+                {
+                    <p class="text-danger fw-bold">Out of Stock</p>
+                    <button class="btn btn-secondary w-100" disabled>Unavailable</button>
+                }
+                else
+                {
+                    var medicineInCart = ((List<PharmacyCart>)ViewData["MedicineInCart"])?.FirstOrDefault(m => m.MedicineId == product.Id);
+                    var isInCart = medicineInCart != null;
+                    var countInCart = isInCart ? medicineInCart?.count : 0;
+                    
+                    <p class="text-primary fw-bold">Price: @product.Price EGP</p>
+
+                    <div class="cart-controls" id="cart-@product.Id" style="@(isInCart ? "display: flex;" : "display: none;")">
+                        <button class="btn btn-light btn-primary" id="plus-@product.Id" onclick="updateCart(@product.Id, 'PlusToCart', event)">
+                            <i class="fas fa-plus text-primary"></i>
+                        </button>
+
+                        <span class="count fw-bold" id="count-@product.Id">@countInCart</span>
+
+                        <button class="btn btn-light btn-primary" id="minus-@product.Id" onclick="updateCart(@product.Id, 'MinusFromCart', event)" style="@(countInCart > 1 ? "display: inline-block;" : "display: none;")">
+                            <i class="fas fa-minus text-primary"></i>
+                        </button>
+
+                        <button class="btn btn-light" id="delete-@product.Id" onclick="deleteItem(@product.Id, event)" style="@(countInCart == 1 ? "display: inline-block;" : "display: none;")">
+                            <i class="fas fa-trash text-danger"></i>
+                        </button>
+                    </div>
+
+                    <button class="btn btn-success w-100" id="adder-@product.Id" onclick="updateCart(@product.Id, 'PlusToCart', event)" style="@(isInCart ? "display: none;" : "display: block;")">
+                        <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                    </button>
+                }
+            </div>
+        </a>
+    </div>
+}
+</div>
+<partial name="_PaginationPartial" model="ViewBag.LastPage"/>
+
+
+<style>
+    .card {
+        border-radius: 10px;
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: scale(1.05);
+    }
+    .card img {
+        height: 150px;
+        object-fit: contain;
+    }
+    .btn {
+        border-radius: 10px;
+    }
+    .cart-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    .count {
+        font-size: 16px;
+    }
+    
+</style>
+
+@section Scripts {
+    <script src="~/js/pagination.js"></script>
+    <script>
+    $(document).ready(function () {
+        const searchInput = $("#searchInput");
+        const medicineContent = $("#medicineContent");
+
+        // Debounce function to limit AJAX calls while typing
+        function debounce(func, delay) {
+            let timer;
+            return function (...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        // Fetch search results
+        function fetchSearchResults() {
+            const searchText = searchInput.val().trim();
+
+            if (searchText.length > 0) {
+                $.ajax({
+                    url: "/Customer/CuraHub/Pharmacy/Medicine/Search",
+                    type: "GET",
+                    data: { searchText },
+                    success: function (response) {
+                        medicineContent.html(response.trim() === "" ? "<p class='text-center text-danger'>No medicines found.</p>" : response);
+                    }
+                });
+            } else {
+                location.reload();
+            }
+        }
+
+        // Attach event listener with debounce to optimize search
+        searchInput.on("input", debounce(fetchSearchResults, 300));
+
+        // Fetch cart count on page load
+        fetchCartCount();
+    });
+
+    // Function to get cart count
+    function fetchCartCount() {
+        $.ajax({
+            url: '/Customer/CuraHub/Pharmacy/PharmacyCart/GetCartCount',
+            type: 'GET',
+            success: function (response) {
+                if (response) {
+                    $('#cart-count').text(response.count);
+                }
+            }
+        });
+    }
+
+    // Function to update cart
+    function updateCart(medicineId, action, event) {
+        event.preventDefault();
+
+        if (!isAuthenticated) {
+            window.location.href = "/Identity/Account/Login";
+            return;
+        }
+
+        $.ajax({
+            url: `/Customer/CuraHub/Pharmacy/PharmacyCart/${action}`,
+            type: "POST",
+            data: { medicineId },
+            success: function (response) {
+                if (response) {
+                    updateUIAfterCartChange(medicineId, response.count);
+                    fetchCartCount();
+                }
+            }
+        });
+    }
+
+    // Function to delete item from cart
+    function deleteItem(medicineId, event) {
+        event.preventDefault();
+
+        $.ajax({
+            url: `/Customer/CuraHub/Pharmacy/PharmacyCart/DeleteFromCart`,
+            type: "POST",
+            data: { medicineId },
+            success: function () {
+                updateUIAfterCartChange(medicineId, 0);
+                fetchCartCount();
+            }
+        });
+    }
+
+    // Function to update UI after cart changes
+    function updateUIAfterCartChange(medicineId, count) {
+        const countElement = $(`#count-${medicineId}`);
+        const addButton = $(`#adder-${medicineId}`);
+        const plusButton = $(`#plus-${medicineId}`);
+        const minusButton = $(`#minus-${medicineId}`);
+        const deleteButton = $(`#delete-${medicineId}`);
+        const cartControls = $(`#cart-${medicineId}`);
+
+        countElement.text(count).toggle(count > 0);
+        cartControls.toggle(count > 0);
+
+        if (count === 0) {
+            addButton.show();
+            plusButton.hide();
+            minusButton.hide();
+            deleteButton.hide();
+        } else if (count === 1) {
+            addButton.hide();
+            plusButton.show();
+            minusButton.hide();
+            deleteButton.show();
+        } else {
+            addButton.hide();
+            plusButton.show();
+            minusButton.show();
+            deleteButton.hide();
+        }
+    }
+    </script>
+}
+

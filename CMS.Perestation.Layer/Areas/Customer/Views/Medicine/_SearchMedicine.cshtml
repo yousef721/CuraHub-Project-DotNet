@@ -1,0 +1,47 @@
+﻿@using CMS.Models.CuraHub.PharmacySection
+@model List<CMS.Models.CuraHub.PharmacySection.Medicine>
+
+@foreach (var product in Model)
+{
+    <div class="col-md-3 mb-4">
+        <a href="/Customer/CuraHub/Pharmacy/Medicine/Details?medicineId=@product.Id" class="card h-100 shadow-sm text-decoration-none">
+            <img src="~/Files/images/@product.Img" class="card-img-top p-3" alt="@product.Name">
+            <div class="card-body text-center">
+                <h6 class="card-title fw-bold">@product.Name</h6>
+                @if (product.Quantity == 0)
+                {
+                    <p class="text-danger fw-bold">Out of Stock</p>
+                    <button class="btn btn-secondary w-100" disabled>Unavailable</button>
+                }
+                else
+                {
+                    var medicineInCart = ((List<PharmacyCart>)ViewData["MedicineInCart"])?.FirstOrDefault(m => m.MedicineId == product.Id);
+                    var isInCart = medicineInCart != null;
+                    var countInCart = isInCart ? medicineInCart.count : 0;
+                    
+                    <p class="text-primary fw-bold">Price: @product.Price EGP</p>
+
+                    <div class="cart-controls" id="cart-@product.Id" style="@(isInCart ? "display: flex;" : "display: none;")">
+                        <button class="btn btn-light btn-primary" id="plus-@product.Id" onclick="updateCart(@product.Id, 'PlusToCart', event)">
+                            <i class="fas fa-plus text-primary"></i>
+                        </button>
+
+                        <span class="count fw-bold" id="count-@product.Id">@countInCart</span>
+
+                        <button class="btn btn-light btn-primary" id="minus-@product.Id" onclick="updateCart(@product.Id, 'MinusFromCart', event)" style="@(countInCart > 1 ? "display: inline-block;" : "display: none;")">
+                            <i class="fas fa-minus text-primary"></i>
+                        </button>
+
+                        <button class="btn btn-danger btn-primary" id="delete-@product.Id" onclick="deleteItem(@product.Id, event)" style="@(countInCart == 1 ? "display: inline-block;" : "display: none;")">
+                            <i class="fas fa-trash text-primary"></i>
+                        </button>
+                    </div>
+
+                    <button class="btn btn-success w-100" id="adder-@product.Id" onclick="updateCart(@product.Id, 'PlusToCart', event)" style="@(isInCart ? "display: none;" : "display: block;")">
+                        <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                    </button>
+                }
+            </div>
+        </a>
+    </div>
+}

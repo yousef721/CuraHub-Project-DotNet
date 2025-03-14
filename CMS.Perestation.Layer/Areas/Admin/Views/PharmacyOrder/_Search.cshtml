@@ -1,0 +1,24 @@
+﻿@model List<CMS.Models.CuraHub.PharmacySection.PharmacySectionVM.PharmacyOrderVM>
+
+
+@foreach (var order in Model)
+{
+    <tr>
+        <td>@order.Id</td>
+        <td>@order.TotalPrice EGP</td>
+        <td>@order.ShipmentStatus</td>
+        <td>@order.PharmacyCustomer?.FirstName @order.PharmacyCustomer?.LastName</td>
+        <td>@order.PharmacyDeliveryRepresentative?.FirstName @order.PharmacyDeliveryRepresentative?.LastName</td>
+        <td class="text-center">
+            <a asp-action="Edit" asp-route-id="@order.Id" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a asp-action="Details" asp-route-id="@order.Id" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-info">
+                <i class="fas fa-info-circle"></i> Details
+            </a>
+            <a class="btn btn-danger delete" data-id="@order.Id" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                <i class="fas fa-trash"></i> Delete
+            </a>
+        </td>
+    </tr>
+}

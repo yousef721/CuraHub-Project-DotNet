@@ -1,0 +1,92 @@
+﻿@using CMS.Models.CuraHub.PharmacySection
+@using CMS.Models.Enums
+@model CMS.Models.CuraHub.PharmacySection.PharmacySectionVM.DeliveryAndCustomerVM
+
+@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<h1 class="m-3 fw-bold">Edit Order</h1>
+<div class="card shadow p-4 rounded">
+    <form asp-action="Edit" method="post" class="needs-validation" enctype="multipart/form-data">
+        <input type="hidden" asp-for="PharmacyOrderVM.Id" />
+        <input type="hidden" name="pageNumber" value="@ViewBag.currentPage"/>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="PharmacyOrderVM.Quentity" class="control-label">Quantity</label>
+                <input asp-for="PharmacyOrderVM.Quentity" class="form-control" type="number" placeholder="Quantity"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="PharmacyOrderVM.Quentity"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="PharmacyOrderVM.Discount" class="control-label">Discount</label>
+                <input asp-for="PharmacyOrderVM.Discount" class="form-control" type="number" placeholder="Discount"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="PharmacyOrderVM.Discount"></span>
+                </div>           
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="PharmacyOrderVM.ShipmentStatus" class="control-label">Shipment Status</label>
+                <select asp-for="PharmacyOrderVM.ShipmentStatus" class="form-control">
+                    <option value="">Select Status</option>
+                    @foreach (var status in Enum.GetValues(typeof(ShipmentStatus)))
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </select>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="PharmacyOrderVM.ShipmentStatus"></span>
+                </div>                
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="PharmacyOrderVM.TotalPrice" class="control-label">Total Price</label>
+                <input asp-for="PharmacyOrderVM.TotalPrice" class="form-control" placeholder="Total Price"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="PharmacyOrderVM.TotalPrice"></span>
+                </div>            
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="PharmacyOrderVM.PharmacyCustomerId" class="control-label">Customer</label>
+                @* <select asp-for="PharmacyOrderVM.PharmacyCustomerId" class="form-control">
+                    <option value="">Select Customer</option>
+                    @foreach (var customer in Model.PharmacyCustomer)
+                    {
+                        <option value="@customer.Id">@customer.FirstName @customer.LastName</option>
+                    }
+                </select> *@
+                <input asp-for="PharmacyOrderVM.PharmacyCustomerId" class="form-control" type="text"/>
+                <div class="invalid-feedback">
+                    <span asp-validation-for="PharmacyOrderVM.PharmacyCustomerId"></span>
+                </div>            
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="PharmacyOrderVM.PharmacyDeliveryRepresentativeId" class="control-label">Delivery Representative</label>
+                <select asp-for="PharmacyOrderVM.PharmacyDeliveryRepresentativeId" class="form-control">
+                    <option value="">Select Delivery</option>
+                    @foreach (var delivery in Model.PharmacyDeliveryRepresentative)
+                    {
+                        <option value="@delivery.Id">@delivery.FirstName @delivery.LastName</option>
+                    }
+                </select>
+                @* <input asp-for="PharmacyDeliveryRepresentativeId" class="form-control" /> *@
+                <div class="invalid-feedback">
+                    <span asp-validation-for="PharmacyOrderVM.PharmacyDeliveryRepresentativeId"></span>
+                </div>            
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save</button>
+        <a asp-action="Index" class="btn btn-secondary mt-3">Cancel</a>
+    </form>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

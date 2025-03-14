@@ -1,0 +1,27 @@
+﻿@using CMS.Models.CuraHub.ClinicSection.ClinicSectionVM.ScheduleVM
+
+@{
+    ViewData["Title"] = "CreateDoctorSchedule";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model CreateDoctorScheduleVM
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card mb-6" style="width: 70%;">
+        <h1 class="text-white" style="background-color:#0070cd">Create Schedule</h1>
+
+        <form asp-action="CreateDoctorSchedule" asp-controller="Schedule" method="post">
+            <input type="hidden" name="DoctorId" value="@Model.DoctorId" />
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <span> for creating your Schedule , Please Press Here : </span>
+                        <button type="submit" style="width:90%" class="btn btn-primary">Create Schedule</button>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+    </div>
+</div>

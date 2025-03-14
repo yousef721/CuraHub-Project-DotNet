@@ -1,0 +1,35 @@
+﻿@model CMS.Models.CuraHub.PharmacySection.PharmacySectionVM.MedicineVM
+
+@{
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<div class="card shadow-sm p-4 rounded mt-5">
+    <div class="card-header bg-primary text-white">
+        <h2 class="text-center">@Model.Name</h2>
+    </div>
+    <div class="card-body">
+        <div class="row d-flex align-items-center">
+            <div class="col-lg-4 col-md-6 text-center">
+                <img src="~/Files/Images/Medicines/@Model.Img" alt="Medicine Image" class="img-fluid mb-sm-3" style="max-height: 250px; object-fit: contain;" />
+            </div>
+            <div class="col-lg-8 col-md-6">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Description:</strong> @Model.Description</li>
+                    <li class="list-group-item"><strong>Price:</strong> <span class="text-success fw-bold">@Model.Price EGP</span></li>
+                    <li class="list-group-item"><strong>Quantity:</strong> @Model.Quantity</li>
+                    <li class="list-group-item"><strong>Category:</strong> @Model.PharmacyCategory?.Name</li>
+                    <li class="list-group-item"><strong>Manufacturer:</strong> @Model.MedicineManufactory?.Name</li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-4 d-flex justify-content-center gap-3">
+            <a asp-action="Edit" asp-route-id="@Model.Id" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-primary px-4">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a asp-action="Index" asp-route-pageNumber="@ViewBag.currentPage" class="btn btn-secondary px-4">
+                <i class="bi bi-arrow-left-circle"></i> Back
+            </a>
+        </div>
+    </div>
+</div>

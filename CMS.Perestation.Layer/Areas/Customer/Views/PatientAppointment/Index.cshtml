@@ -1,0 +1,51 @@
+﻿@using CMS.Models.CuraHub.ClinicSection
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+
+@model List<PatientAppointment>
+
+<br />
+<br />
+<br />
+<br />
+ 
+
+
+<div class="bg-white p-2 m-2">
+    <table class="table" style="border:solid">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col" style="text-align:center">Time</th>
+                <th scope="col" style="text-align:center">Patient Name</th>
+                <th scope="col" style="text-align:center">Details</th>
+                <th scope="col" style="text-align:center">Medical Analysis</th>
+                <th scope="col" style="text-align:center">History</th>
+                <th scope="col" style="text-align:center">MedicalPrescription</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr style="border:solid">
+                    <th scope="row" style="border:solid">@item.Schedule.Appointment</th>
+                    <th scope="row" style="border:solid">@item.Patient.FirstName @item.Patient.LastName </th>
+                    <th scope="row" style="border:solid"><a target="_blank" href="/Customer/CuraHub/Clinic/Patient/Details?PatientId=@item.PatientId">Details</a></th>
+                    <th scope="row" style="border:solid"><a target="_blank" href="#">Medical Analysis</a></th>
+                    <th scope="row" style="border:solid"><a target="_blank" href="/Customer/CuraHub/Clinic/PatientHistory/Index?PatientId=@item.PatientId">History</a></th>
+                    <th scope="row" style="border:solid"><a target="_blank" href="/Customer/CuraHub/Clinic/MedicalPrescription/Create?PatientId=@item.PatientId&ScheduleId=@item.ScheduleId">Create Prescription</a></th>
+
+                    
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+
+

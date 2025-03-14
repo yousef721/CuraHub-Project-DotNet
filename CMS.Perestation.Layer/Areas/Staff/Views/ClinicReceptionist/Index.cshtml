@@ -1,0 +1,161 @@
+﻿@using CMS.Models.CuraHub.ClinicSection.ClinicSectionVM.ClinicReceptionistVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+
+@model ClinicReceptionistsVM
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="row">
+    <div class="col-10">
+        <h1>All Clinic Receptionists</h1>
+    </div>
+</div>
+<br />
+<div class="rounded-2 bg-white pb-2">
+    <form>
+        <br />
+
+        <div class="row">
+            <div class="row">
+                <div class="col-5 ms-2">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="query" id="SearchInput" placeholder="Search By Clinic Receptionist Name">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-primary">Search</button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </form>
+</div>
+<br />
+
+<table class="table" style="border:solid">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col" style="text-align:center">ID</th>
+            <th scope="col" style="text-align:center">Name</th>
+            <th scope="col" style="text-align:center">Phone</th>
+            <th scope="col" style="text-align:center">Email</th>
+            <th scope="col" style="text-align:center">ProfilePicture</th>
+            <th scope="col" style="text-align:center">Personal National ID Number</th>
+            <th scope="col" style="text-align:center">More Details</th>
+            <th scope="col" style="text-align:center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.clinicReceptionists)
+        {
+            <tr style="border:solid">
+                <th scope="row" style="border:solid">@item.Id</th>
+                <th scope="row" style="border:solid">@item.FirstName @item.LastName</th>
+                <th scope="row" style="border:solid">@item.Phone</th>
+                <th scope="row" style="border:solid">@item.Email</th>
+                <th scope="row" style="border:solid;text-align:center"> <img src="~/Files/Images/ClinicReceptionistPictures/@item.ProfilePicture" style="width:50px" class="rounded-circle" alt="Alternate Text" /> </th>
+                <th scope="row" style="border:solid;text-align:center">@item.PersonalNationalIDNumber</th>
+                <th scope="row" style="border:solid;text-align:center"><a class="dropdown-item" href="/Staff/CuraHub/Clinic/ClinicReceptionist/Details?ClinicReceptionistId=@item.Id">Details</a></th>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                        <button type="button" class="btn btn-primary">Action</button>
+                        <div class="btn-group" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                @* <a class="dropdown-item" href="/Staff/CuraHub/Clinic/ClinicReceptionist/CreateEdit?ClinicReceptionistId=@item.Id"><i class="bi bi-pencil-square"></i>Edit</a> *@
+                                <a class="dropdown-item delete-btn"
+                                   data-ClinicReceptionist-id="@item.Id"
+                                   data-ClinicReceptionist-name="@item.FirstName" + "@item.LastName"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#deleteModal">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex flex-row-reverse">
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            @for (int i = 1; i <= (Model.TotalClinicReceptionistCount + 4) / 5; i++)
+            {
+
+                <li class="page-item"><a class="page-link " href="/Staff/CuraHub/ClinicReceptionist/Index?PageNumber=@i">@i</a></li>
+
+            }
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+
+
+</div>
+
+
+
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the Clinic Receptionist <strong id="modalClinicReceptionistName"></strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Attach event listener to all delete buttons
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const ClinicReceptionistId = this.getAttribute('data-ClinicReceptionist-id');
+            const ClinicReceptionistName = this.getAttribute('data-ClinicReceptionist-name');
+
+            // Set the category name in the modal
+            document.getElementById('modalClinicReceptionistName').textContent = ClinicReceptionistName;
+
+            // Update the delete link to include the categoryId
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            confirmDeleteBtn.href = `/Staff/CuraHub/Clinic/ClinicReceptionist/Delete?ClinicReceptionistId=${ClinicReceptionistId}`;
+        });
+    });
+</script>
+
+
+
+
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}

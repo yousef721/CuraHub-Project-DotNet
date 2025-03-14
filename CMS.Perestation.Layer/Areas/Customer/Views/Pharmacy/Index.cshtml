@@ -1,0 +1,94 @@
+﻿@model List<CMS.Models.CuraHub.PharmacySection.PharmacyCategory>
+
+@{
+    ViewData["Title"] = "Pharmacy Categories";
+    Layout = "~/Views/Shared/_PharmacyLayout.cshtml";
+}
+<div class="position-relative">
+    <div class="input-group shadow-sm">
+        <span class="input-group-text bg-primary"><i class="fas fa-search text-white"></i></span>
+        <input type="text" class="form-control" id="searchInput" placeholder="Search for medicines..." autocomplete="off">
+    </div>
+
+    @* Search Dropdown Results *@
+    <ul id="searchResults" class="list-group position-absolute w-100 shadow bg-white z-3" 
+        style="overflow-y: auto; max-height: 300px; top: 100%; display: none; border-radius: 8px;">
+    </ul>
+</div>
+
+<h2 class="text-dark font-weight-bold mt-4">Browse by Category</h2>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    @foreach (var category in Model)
+    {
+        <div class="col">
+            <a class="text-decoration-none" href="/Customer/CuraHub/Pharmacy/Medicine/Index?categoryId=@category.Id">
+                <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden transition">
+                    <img src="@(string.IsNullOrEmpty(category.Img) ? "/Files/Images/PharmacyCategories/default.png" : $"/Files/Images/PharmacyCategories/{category.Img}")" 
+                         alt="@category.Name" 
+                         class="card-img-top w-100" 
+                         style="height: 200px; object-fit: cover;">
+                    <div class="card-footer bg-light text-center py-3">
+                        <h5 class="card-title fw-semibold text-dark mb-0">@category.Name</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+<style>
+    .card.transition {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .card.transition:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+    const searchInput = $("#searchInput");
+    const searchResultsContainer = $("#searchResults");
+
+    // Debounce function to prevent excessive AJAX calls while typing
+    function debounce(func, delay) {
+        let timer;
+        return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
+
+    // Function to fetch search results
+    function fetchSearchResults() {
+        const searchText = searchInput.val().trim();
+
+        if (searchText.length > 0) {
+            $.ajax({
+                url: "/Customer/CuraHub/Pharmacy/SearchMedicines",
+                type: "GET",
+                data: { searchText },
+                success: function (data) {
+                    searchResultsContainer.html(data).show();
+                }
+            });
+        } else {
+            searchResultsContainer.hide();
+        }
+    }
+
+    // Attach debounced event listener to input field
+    searchInput.on("input", debounce(fetchSearchResults, 300));
+
+    // Hide search results when clicking outside
+    $(document).on("click", function (event) {
+        if (!searchInput.is(event.target) && !searchResultsContainer.is(event.target) && searchResultsContainer.has(event.target).length === 0) {
+            searchResultsContainer.hide();
+        }
+    });
+});
+</script>
+

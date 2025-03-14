@@ -1,0 +1,66 @@
+﻿@using CMS.Models.CuraHub.ClinicSection
+
+@{
+    ViewData["Title"] = "ShowAppoitments";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model List<PatientAppointment>
+
+<div class="min-vh-100">
+    <br />
+    <h1>
+        <img src="~/Files/Images/فلسطين.svg" class="rounded-circle " style="width: 50px;" />
+    </h1>
+
+    <div class="bg-white p-2 m-2">
+        <table class="table" style="border:solid">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" style="text-align:center; ">Date</th>
+                    <th scope="col" style="text-align:center; ">Day</th>
+                    <th scope="col" style="text-align:center; ">Appointment</th>
+                    <th scope="col" style="text-align:center; ">Patient Name</th>
+                    <th scope="col" style="text-align:center; ">Payment</th>
+                    <th scope="col" style="text-align:center; ">Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr style="border:solid">
+
+                        <th scope="row" style="border:solid">@item.date</th>
+                        <th scope="row" style="border:solid">@item.Schedule.Day</th>
+                        <th scope="row" style="border:solid">@item.Schedule.Appointment</th>
+                        <th scope="row" style="border:solid">@item.Patient.FirstName @item.Patient.LastName </th>
+                       @if(item.paid)
+                       {
+                            <th scope="row" style="border:solid"><button href="" disabled class="btn btn-success mt-0"> Complete</button></th>
+
+                       }
+                       else
+                       {
+                            <th scope="row" style="border:solid"><a class="btn btn-warning" href="/Customer/CuraHub/Clinic/PatientAppointmentCard/CompletePayment?ScheduleId=@item.ScheduleId&PatientId=@item.PatientId&ClinicReceptionistId=@TempData["ClinicReceptionistId"]">Not Complete</a></th>
+
+                       }
+                        
+                        <td style="border:solid">
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                                <button type="button" class="btn btn-primary mt-0">Action</button>
+                                <div class="btn-group" role="group">
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary mt-0 dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        @* <a class="dropdown-item" href="/Admin/Actor/Edit?ActorId=@item.Id">Edit</a> *@
+                                        @* <a class="dropdown-item" href="/Admin/Actor/Delete?ActorId=@item.Id" onclick="return confirm('are you sure?')">Cancel</a> *@
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

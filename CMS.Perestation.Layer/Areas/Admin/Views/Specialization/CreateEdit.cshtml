@@ -1,0 +1,90 @@
+﻿@using CMS.Models.CuraHub.ClinicSection.ClinicSectionVM
+
+@{
+    ViewData["Title"] = "CreateEdit";
+    Layout = "~/Views/Shared/_CuraHubLayout.cshtml";
+}
+@model SpecializationVM
+<h1>
+    <img src="~/Files/Images/فلسطين.svg" class="rounded-circle " style="width: 50px;" />
+</h1>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card mb-6" style="max-width: 70%;">
+        @if(Model.specializationsOperation == SpecializationsOperation.Creating)
+        {
+            <h1 class="text-white" style="background-color:#006d77">Add New Specialization</h1>
+
+        }
+        else
+        {
+            <h1 class="text-white" style="background-color:#006d77">Update @Model.Name Specialization</h1>
+
+        }
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <form action="CreateEdit" enctype="multipart/form-data" method="post">
+            <input type="hidden" name="Id" value="@Model.Id"  id="Id">
+            <input type="hidden" name="specializationsOperation" value="@Model.specializationsOperation" id="Id">
+
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body w-100">
+                       
+                        <div class="mb-3">
+                            <label for="Name" class="form-label text-start d-block">Specialization Name</label>
+                            <input type="text" name="Name" value="@Model.Name" placeholder="Specialization Name" required="" class="form-control" id="Name" aria-describedby="emailHelp">
+                             <span asp-validation-for="Name" class="text-danger  text-start d-block"></span> 
+
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <img id="preview" src="~/Files/Images/SpecializationLogo/@Model.Icon" alt="Image Preview" style="max-width: 180px; max-height: 250px;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label text-start d-block">Specialization Logo</label>
+                        <input type="file" accept="image/*" class="form-control" value="~/Files/Images/MedicalLogo.jpg" name="file" id="file" placeholder="Specialization Logo" onchange="previewImage(event)">
+                    </div>
+                </div>
+            </div>
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        @if (Model.specializationsOperation == SpecializationsOperation.Creating)
+                        {
+                            <button type="submit" style="width:90%" class="btn btn-primary"> Add</button>
+
+                        }
+                        else
+                        {
+                            <button type="submit" style="width:90%" class="btn btn-primary"> Edit</button>
+
+                        }
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+@section Scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}

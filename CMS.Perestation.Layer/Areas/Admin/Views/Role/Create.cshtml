@@ -1,0 +1,43 @@
+﻿@using CMS.Models.CuraHub.IdentitySection.IdentitySectionVM
+@model ApplicationRoleVM
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_authenticationLayout.cshtml";
+
+}
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<div class="bg-white p-3 bg-opacity-75">
+
+<h1>Create New Role</h1>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" asp-controller="Role" asp-area="Admin" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                    <label class="control-label text-black  text-start d-block">Role Name</label>
+                    <input type="text" name="Name" value="@Model.Name" class="form-control text-black w-100" />
+                   <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <br/>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</div>
