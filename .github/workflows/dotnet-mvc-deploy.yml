@@ -1,4 +1,4 @@
-name: Build, Publish and Deploy .NET MVC (Secure)
+name: Build, Publish and Deploy .NET MVC (Secure with Clean Deploy)
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Publish
-      run: dotnet publish -c Release -o ./publish
+      run: dotnet publish -c Release -o ./publish/
       env:
         DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
         GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
@@ -33,11 +33,12 @@ jobs:
         FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
         FACEBOOK_APP_SECRET: ${{ secrets.FACEBOOK_APP_SECRET }}
 
-    - name: Deploy via FTP
+    - name: Deploy via FTP (Clean)
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./publish
-        server-dir: /wwwroot/
+        local-dir: ./publish/       
+        server-dir: /wwwroot/        
+        delete: true                
