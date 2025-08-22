@@ -25,11 +25,12 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: Publish
-      run: |
-        dotnet publish -c Release -o ./publish /p:ConnectionStrings__DefaultConnection="Server=${{ secrets.FTP_SERVER }};Database=db25867;User Id=${{ secrets.FTP_USERNAME }};Password=${{ secrets.FTP_PASSWORD }};Encrypt=False;MultipleActiveResultSets=True;"
+      run: dotnet publish -c Release -o ./publish
+      env:
+        DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
 
     - name: Deploy via FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
