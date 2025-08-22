@@ -1,4 +1,4 @@
-name: Build, Publish and Deploy .NET MVC via SFTP
+name: Build, Publish and Deploy .NET MVC via FTP/FTPS
 
 on:
   push:
@@ -33,14 +33,14 @@ jobs:
         FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
         FACEBOOK_APP_SECRET: ${{ secrets.FACEBOOK_APP_SECRET }}
 
-    - name: Deploy via SFTP (Clean)
+    - name: Deploy via FTP/FTPS (Clean)
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        protocol: sftp                # استخدام SFTP
-        port: 22                      # رقم البورت المناسب للسيرفر
-        local-dir: ./publish/         # يجب أن ينتهي بـ /
-        server-dir: /wwwroot/         # غيّر حسب مجلد السيرفر
-        dangerous-clean-slate: true   # يحذف كل الملفات القديمة قبل رفع الجديد
+        protocol: ftps              
+        port: 21                     
+        local-dir: ./publish/        
+        server-dir: /wwwroot/        
+        dangerous-clean-slate: true  
